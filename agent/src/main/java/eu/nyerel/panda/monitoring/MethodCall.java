@@ -1,4 +1,4 @@
-package eu.nyerel.panda.model;
+package eu.nyerel.panda.monitoring;
 
 import eu.nyerel.panda.util.Validate;
 
@@ -9,18 +9,16 @@ import java.util.List;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public abstract class CallTreeNode {
+public class MethodCall {
 
-	private final long id;
 	private final long start = System.currentTimeMillis();
 	private boolean finished = false;
 	private long duration;
 	private final String description;
-	private final CallTreeNode parent;
-	private final List<CallTreeNode> children = new ArrayList<CallTreeNode>();
+	private final MethodCall parent;
+	private final List<MethodCall> children = new ArrayList<MethodCall>();
 
-	protected CallTreeNode(long id, CallTreeNode parent, String description) {
-		this.id = id;
+	public MethodCall(MethodCall parent, String description) {
 		this.description = description;
 		this.parent = parent;
 	}
@@ -29,10 +27,6 @@ public abstract class CallTreeNode {
 		Validate.isFalse(finished);
 		duration = System.currentTimeMillis() - start;
 		finished = true;
-	}
-
-	public long getId() {
-		return id;
 	}
 
 	public long getStart() {
@@ -49,17 +43,13 @@ public abstract class CallTreeNode {
 
 	public long getChildrenDuration() {
 		long sum = 0;
-		for (CallTreeNode child : children) {
+		for (MethodCall child : children) {
 			sum += child.getDuration();
 		}
 		return sum;
 	}
 
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void addChildNode(CallTreeNode child) {
+	public void addChildNode(MethodCall child) {
 		children.add(child);
 	}
 
@@ -67,11 +57,11 @@ public abstract class CallTreeNode {
 		return description;
 	}
 
-	public CallTreeNode getParent() {
+	public MethodCall getParent() {
 		return parent;
 	}
 
-	public List<CallTreeNode> getChildren() {
+	public List<MethodCall> getChildren() {
 		return Collections.unmodifiableList(children);
 	}
 

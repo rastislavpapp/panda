@@ -1,21 +1,20 @@
 package eu.nyerel.panda.monitoring;
 
-import eu.nyerel.panda.model.CallTreeNode;
 import eu.nyerel.panda.util.Validate;
 
 /**
  * @author Rastislav Papp (rastislav.papp@ibacz.eu))
  */
-public class CallTreeRecorder {
+public class MethodCallRecorder {
 
-    private CallTreeNode root = null;
-    private CallTreeNode current = null;
+    private MethodCall root = null;
+    private MethodCall current = null;
 
-    public CallTreeNode getCurrentNode() {
+    public MethodCall getCurrentNode() {
         return current;
     }
 
-    public void startNode(CallTreeNode node) {
+    public void startMethod(MethodCall node) {
         Validate.notNull(node);
         if (root == null) {
             root = node;
@@ -26,12 +25,12 @@ public class CallTreeRecorder {
         current = node;
     }
 
-    public void finishCurrentNode() {
+    public void finishCurrentMethod() {
         Validate.notNull(root);
         Validate.notNull(current);
         current.finish();
         if (current == root) {
-            recordFinishedCallTree();
+            recordFinishedMethodTree();
             root = null;
             current = null;
         } else {
@@ -39,8 +38,8 @@ public class CallTreeRecorder {
         }
     }
 
-    private void recordFinishedCallTree() {
-		MonitoringEventListenerRegistry.fireCallTreeFinished(root);
+    private void recordFinishedMethodTree() {
+		MonitoringEventListenerRegistry.fireMethodCallTreeFinished(root);
     }
 
 }

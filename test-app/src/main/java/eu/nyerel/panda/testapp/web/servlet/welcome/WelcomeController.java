@@ -21,13 +21,13 @@ public class WelcomeController {
 
 	@RequestMapping("/page2")
 	public String page2(Model model) {
-		testService.makeInternalCalls(10, true);
+		testService.makeInternalCalls(10);
 		return "welcome/page2";
 	}
 
 	@RequestMapping("/page3")
 	public String page3(Model model) {
-		testService.makeInternalCalls(100, false);
+		testService.makeInternalCalls(100);
 		return "welcome/page3";
 	}
 

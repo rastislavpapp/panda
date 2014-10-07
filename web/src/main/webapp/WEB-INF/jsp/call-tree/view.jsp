@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="../init.jspf"%>
 
-<%--@elvariable id="monitoringData" type="java.util.List<eu.nyerel.panda.model.CallTreeNode>"--%>
+<%--@elvariable id="callTree" type="java.util.List<eu.nyerel.panda.monitoringresult.calltree.CallTreeNode>"--%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,7 +24,7 @@
     <div class="container">
         <h1 class="page-header">Call Tree</h1>
         <p class="lead">
-            <panda:call-tree-table nodes="${monitoringData}" id="callTree"/>
+            <panda:call-tree id="callTree" nodes="${callTree}"/>
         </p>
 
     </div>

@@ -1,10 +1,10 @@
-package eu.nyerel.panda.model;
+package eu.nyerel.panda.monitoring;
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
 public interface MonitoringEventListener {
 
-	void onCallTreeFinished(CallTreeNode node);
+	void onCallTreeFinished(MethodCall node);
 
 }

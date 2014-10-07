@@ -23,6 +23,8 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
+                            <finalName>panda</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>

@@ -32,8 +32,8 @@ public class MonitoredMethodTransformer {
 		return CtNewMethod.copy(method, NamingUtil.pandalize(method.getName()), ctClass, null);
 	}
 
-	private static final String METHOD_CALL_TREE_RECORDER =
-			MethodCallTreeRecorder.class.getName();
+	private static final String CALL_TREE_RECORDER =
+			MethodCallRecorderUtil.class.getName();
 
 	private class MonitoredMethodBodyBuilder {
 
@@ -60,10 +60,9 @@ public class MonitoredMethodTransformer {
 		}
 
 		private void callInternalMethod() throws NotFoundException {
+			body.append("\t\t");
 			if (!returnsVoid()) {
-				body.append("\t\treturn ");
-			} else {
-				body.append("\t");
+				body.append("return ");
 			}
 			body.append(NamingUtil.pandalize(method.getName())).append("($$);\n");
 		}
@@ -73,12 +72,12 @@ public class MonitoredMethodTransformer {
 		}
 
 		private void callEnterMethod() {
-			body.append("\t").append(METHOD_CALL_TREE_RECORDER).append(".enterMethod(")
+			body.append("\t").append(CALL_TREE_RECORDER).append(".startMethod(")
 					.append("\"").append(method.getLongName()).append("\");\n");
 		}
 
 		private void callExitMethod() {
-			body.append("\t\t").append(METHOD_CALL_TREE_RECORDER).append(".exitMethod();\n");
+			body.append("\t\t").append(CALL_TREE_RECORDER).append(".finishCurrentMethod();\n");
 		}
 
 	}

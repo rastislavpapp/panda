@@ -1,8 +1,5 @@
 package eu.nyerel.panda.monitoring;
 
-import eu.nyerel.panda.model.CallTreeNode;
-import eu.nyerel.panda.model.MonitoringEventListener;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -25,7 +22,7 @@ public class MonitoringEventListenerRegistry {
 		LISTENERS.remove(listener);
 	}
 
-	public static void fireCallTreeFinished(CallTreeNode node) {
+	public static void fireMethodCallTreeFinished(MethodCall node) {
 		for (MonitoringEventListener listener : LISTENERS) {
 			listener.onCallTreeFinished(node);
 		}
