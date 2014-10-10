@@ -1,5 +1,7 @@
 package eu.nyerel.panda.testapp.web.servlet.welcome;
 
+import eu.nyerel.panda.testapp.service.TestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class WelcomeController {
 
-	private TestService testService = new TestService();
+	@Autowired
+	private TestService testService;
 
 	@RequestMapping
 	public String page1(Model model) {
 		testService.waitFor(1000);
+		testService.callDatabase();
 		return "welcome/page1";
 	}
 
@@ -27,7 +31,7 @@ public class WelcomeController {
 
 	@RequestMapping("/page3")
 	public String page3(Model model) {
-		testService.makeInternalCalls(100);
+		testService.fastCall();
 		return "welcome/page3";
 	}
 

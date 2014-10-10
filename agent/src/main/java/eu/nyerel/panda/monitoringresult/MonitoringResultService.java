@@ -1,10 +1,9 @@
 package eu.nyerel.panda.monitoringresult;
 
-import eu.nyerel.panda.monitoring.MethodCall;
+import eu.nyerel.panda.monitoring.MonitoredEvent;
 import eu.nyerel.panda.monitoring.MonitoringEventListener;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeCreator;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
-import eu.nyerel.panda.util.IdSequenceUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +16,7 @@ public class MonitoringResultService implements MonitoringEventListener {
 
 	private static MonitoringResultService INSTANCE;
 
-	private List<MethodCall> data = Collections.synchronizedList(new ArrayList<MethodCall>());
+	private List<MonitoredEvent> data = Collections.synchronizedList(new ArrayList<MonitoredEvent>());
 
 	private MonitoringResultService() {
 	}
@@ -33,7 +32,7 @@ public class MonitoringResultService implements MonitoringEventListener {
 		return constructCallTree(data);
 	}
 
-	private List<CallTreeNode> constructCallTree(List<MethodCall> data) {
+	private List<CallTreeNode> constructCallTree(List<MonitoredEvent> data) {
 		return new CallTreeCreator().create(data);
 	}
 
@@ -42,7 +41,7 @@ public class MonitoringResultService implements MonitoringEventListener {
 	}
 
 	@Override
-	public void onCallTreeFinished(MethodCall node) {
+	public void onCallTreeFinished(MonitoredEvent node) {
 		data.add(node);
 	}
 

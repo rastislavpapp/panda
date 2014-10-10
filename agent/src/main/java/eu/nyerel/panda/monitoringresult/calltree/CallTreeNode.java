@@ -1,6 +1,5 @@
 package eu.nyerel.panda.monitoringresult.calltree;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,10 +8,11 @@ import java.util.List;
 public class CallTreeNode {
 
 	private long id;
+	private CallTreeNodeType type;
 	private CallTreeNodeDuration duration;
 	private String description;
 	private CallTreeNode parent;
-	private List<CallTreeNode> children = new ArrayList<CallTreeNode>();
+	private List<CallTreeNode> children;
 
 	public long getId() {
 		return id;
@@ -20,6 +20,14 @@ public class CallTreeNode {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public CallTreeNodeType getType() {
+		return type;
+	}
+
+	public void setType(CallTreeNodeType type) {
+		this.type = type;
 	}
 
 	public CallTreeNodeDuration getDuration() {
@@ -53,4 +61,5 @@ public class CallTreeNode {
 	public void setChildren(List<CallTreeNode> children) {
 		this.children = children;
 	}
+
 }

@@ -5,6 +5,6 @@ package eu.nyerel.panda.monitoring;
  */
 public interface MonitoringEventListener {
 
-	void onCallTreeFinished(MethodCall node);
+	void onCallTreeFinished(MonitoredEvent node);
 
 }

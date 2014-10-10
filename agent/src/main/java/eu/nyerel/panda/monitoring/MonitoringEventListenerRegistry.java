@@ -22,7 +22,7 @@ public class MonitoringEventListenerRegistry {
 		LISTENERS.remove(listener);
 	}
 
-	public static void fireMethodCallTreeFinished(MethodCall node) {
+	public static void fireEventCallTreeFinished(MonitoredEvent node) {
 		for (MonitoringEventListener listener : LISTENERS) {
 			listener.onCallTreeFinished(node);
 		}

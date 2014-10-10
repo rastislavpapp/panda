@@ -7,8 +7,8 @@ public class MethodCallRecorderFactory implements MonitoringEventListener {
 
 	private static MethodCallRecorderFactory INSTANCE;
 
-	private final ThreadLocal<MethodCallRecorder> callTreeRecorderTL =
-			new ThreadLocal<MethodCallRecorder>();
+	private final ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL =
+			new ThreadLocal<MonitoredEventRecorder>();
 
     private MethodCallRecorderFactory() {
     }
@@ -20,11 +20,11 @@ public class MethodCallRecorderFactory implements MonitoringEventListener {
 		return INSTANCE;
 	}
 
-    public static MethodCallRecorder getRecorder() {
-		ThreadLocal<MethodCallRecorder> callTreeRecorderTL = getInstance().callTreeRecorderTL;
-		MethodCallRecorder cs = callTreeRecorderTL.get();
+    public static MonitoredEventRecorder getRecorder() {
+		ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL = getInstance().callTreeRecorderTL;
+		MonitoredEventRecorder cs = callTreeRecorderTL.get();
         if (cs == null) {
-            cs = new MethodCallRecorder();
+            cs = new MonitoredEventRecorder();
             callTreeRecorderTL.set(cs);
             return cs;
         } else {
@@ -33,7 +33,7 @@ public class MethodCallRecorderFactory implements MonitoringEventListener {
     }
 
 	@Override
-	public void onCallTreeFinished(MethodCall node) {
+	public void onCallTreeFinished(MonitoredEvent node) {
 		callTreeRecorderTL.remove();
 	}
 

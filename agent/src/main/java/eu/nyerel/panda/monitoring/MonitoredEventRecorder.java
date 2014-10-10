@@ -5,32 +5,32 @@ import eu.nyerel.panda.util.Validate;
 /**
  * @author Rastislav Papp (rastislav.papp@ibacz.eu))
  */
-public class MethodCallRecorder {
+public class MonitoredEventRecorder {
 
-    private MethodCall root = null;
-    private MethodCall current = null;
+    private MonitoredEvent root = null;
+    private MonitoredEvent current = null;
 
-    public MethodCall getCurrentNode() {
+    public MonitoredEvent getCurrentNode() {
         return current;
     }
 
-    public void startMethod(MethodCall node) {
-        Validate.notNull(node);
+	public void startEvent(MonitoredEvent event) {
+        Validate.notNull(event);
         if (root == null) {
-            root = node;
+            root = event;
         } else {
             Validate.notNull(current);
-            current.addChildNode(node);
+            current.addChildNode(event);
         }
-        current = node;
+        current = event;
     }
 
-    public void finishCurrentMethod() {
+    public void finishCurrentEvent() {
         Validate.notNull(root);
         Validate.notNull(current);
         current.finish();
         if (current == root) {
-            recordFinishedMethodTree();
+            recordFinishedEventTree();
             root = null;
             current = null;
         } else {
@@ -38,8 +38,8 @@ public class MethodCallRecorder {
         }
     }
 
-    private void recordFinishedMethodTree() {
-		MonitoringEventListenerRegistry.fireMethodCallTreeFinished(root);
+    private void recordFinishedEventTree() {
+		MonitoringEventListenerRegistry.fireEventCallTreeFinished(root);
     }
 
 }
