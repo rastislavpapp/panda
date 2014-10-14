@@ -13,6 +13,14 @@ public class CollectionUtil {
 		return list;
 	}
 
+	public static <T> Set<T> set(Set<T> ... sets) {
+		Set<T> result = new HashSet<T>();
+		for (Set<T> set : sets) {
+			result.addAll(set);
+		}
+		return result;
+	}
+
 	public static <T> Set<T> set(T ... items) {
 		Set<T> set = new HashSet<T>();
 		Collections.addAll(set, items);

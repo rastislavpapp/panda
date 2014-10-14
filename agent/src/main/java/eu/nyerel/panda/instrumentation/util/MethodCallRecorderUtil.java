@@ -3,7 +3,7 @@ package eu.nyerel.panda.instrumentation.util;
 import eu.nyerel.panda.monitoring.DatabaseQuery;
 import eu.nyerel.panda.monitoring.MethodCall;
 import eu.nyerel.panda.monitoring.MonitoredEventRecorder;
-import eu.nyerel.panda.monitoring.MethodCallRecorderFactory;
+import eu.nyerel.panda.monitoring.MonitoredEventRecorderFactory;
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -11,18 +11,20 @@ import eu.nyerel.panda.monitoring.MethodCallRecorderFactory;
 public class MethodCallRecorderUtil {
 
 	public static void startMethod(String methodSignature) {
-		MonitoredEventRecorder recorder = MethodCallRecorderFactory.getRecorder();
+		MonitoredEventRecorder recorder = MonitoredEventRecorderFactory.getRecorder();
 		recorder.startEvent(new MethodCall(recorder.getCurrentNode(), methodSignature));
 	}
 
 	public static void finishCurrentMethod() {
-		MethodCallRecorderFactory.getRecorder().finishCurrentEvent();
+		MonitoredEventRecorderFactory.getRecorder().finishCurrentEvent();
 	}
 
 	public static void addQuery(String query, long duration) {
-		MonitoredEventRecorder recorder = MethodCallRecorderFactory.getRecorder();
+		MonitoredEventRecorder recorder = MonitoredEventRecorderFactory.getRecorder();
 		recorder.startEvent(new DatabaseQuery(recorder.getCurrentNode(), query, duration));
 		recorder.finishCurrentEvent();
 	}
+
+
 
 }

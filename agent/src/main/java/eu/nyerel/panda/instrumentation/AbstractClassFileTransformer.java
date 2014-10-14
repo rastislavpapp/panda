@@ -34,7 +34,7 @@ public abstract class AbstractClassFileTransformer implements ClassFileTransform
 					classfileBuffer = ctClass.toBytecode();
 				}
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				e.printStackTrace(); //rethrowing the exception not wanted, it gets consumed and not logged
 			}
 		}
 		return classfileBuffer;

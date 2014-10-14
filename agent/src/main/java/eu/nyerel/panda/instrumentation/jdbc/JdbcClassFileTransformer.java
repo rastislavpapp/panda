@@ -44,9 +44,15 @@ public class JdbcClassFileTransformer extends AbstractClassFileTransformer imple
 			new AbstractMap.SimpleEntry<ClassTransformer, Set<String>>(new ConnectionCreatePreparedStatementTransformer(), CONNECTION_CLASSES)
 	);
 
+	private static final Set<String> ALL_CLASSES = CollectionUtil.set(
+			STATEMENT_CLASSES,
+			PREPARED_STATEMENT_CLASSES,
+			CONNECTION_CLASSES
+	);
+
 	@Override
 	protected boolean shouldTransform(String className) {
-		return STATEMENT_CLASSES.contains(className);
+		return ALL_CLASSES.contains(className);
 	}
 
 	@Override

@@ -3,25 +3,25 @@ package eu.nyerel.panda.monitoring;
 /**
  * @author Rastislav Papp (rastislav.papp@ibacz.eu))
  */
-public class MethodCallRecorderFactory implements MonitoringEventListener {
+public class MonitoredEventRecorderFactory implements MonitoringEventListener {
 
-	private static MethodCallRecorderFactory INSTANCE;
+	private static MonitoredEventRecorderFactory INSTANCE;
 
-	private final ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL =
+	private final ThreadLocal<MonitoredEventRecorder> recorderTL =
 			new ThreadLocal<MonitoredEventRecorder>();
 
-    private MethodCallRecorderFactory() {
+    private MonitoredEventRecorderFactory() {
     }
 
-	public static MethodCallRecorderFactory getInstance() {
+	public static MonitoredEventRecorderFactory getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new MethodCallRecorderFactory();
+			INSTANCE = new MonitoredEventRecorderFactory();
 		}
 		return INSTANCE;
 	}
 
     public static MonitoredEventRecorder getRecorder() {
-		ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL = getInstance().callTreeRecorderTL;
+		ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL = getInstance().recorderTL;
 		MonitoredEventRecorder cs = callTreeRecorderTL.get();
         if (cs == null) {
             cs = new MonitoredEventRecorder();
@@ -34,7 +34,7 @@ public class MethodCallRecorderFactory implements MonitoringEventListener {
 
 	@Override
 	public void onCallTreeFinished(MonitoredEvent node) {
-		callTreeRecorderTL.remove();
+		recorderTL.remove();
 	}
 
 }

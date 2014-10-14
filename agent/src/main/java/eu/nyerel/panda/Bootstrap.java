@@ -2,7 +2,8 @@ package eu.nyerel.panda;
 
 import eu.nyerel.panda.instrumentation.jdbc.JdbcClassFileTransformer;
 import eu.nyerel.panda.instrumentation.monitoring.MonitorClassFileTransformer;
-import eu.nyerel.panda.monitoring.MethodCallRecorderFactory;
+import eu.nyerel.panda.monitoring.DataStorage;
+import eu.nyerel.panda.monitoring.MonitoredEventRecorderFactory;
 import eu.nyerel.panda.monitoring.MonitoringEventListenerRegistry;
 import eu.nyerel.panda.monitoringresult.MonitoringResultService;
 
@@ -23,7 +24,8 @@ public class Bootstrap {
 		inst.addTransformer(new MonitorClassFileTransformer());
 		inst.addTransformer(new JdbcClassFileTransformer());
 		MonitoringEventListenerRegistry.register(MonitoringResultService.getInstance());
-		MonitoringEventListenerRegistry.register(MethodCallRecorderFactory.getInstance());
+		MonitoringEventListenerRegistry.register(MonitoredEventRecorderFactory.getInstance());
+		MonitoringEventListenerRegistry.register(DataStorage.getInstance());
 	}
 
 }
