@@ -24,6 +24,10 @@ public class TestService {
 		recursiveInternalCall(10, false);
 	}
 
+	public void testInheritance() {
+		new InheritanceTestChild().doNothing("abc");
+	}
+
 	public void callDatabase() {
 		try {
 			Class.forName(driverName);

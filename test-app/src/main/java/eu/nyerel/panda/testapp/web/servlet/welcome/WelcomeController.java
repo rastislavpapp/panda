@@ -35,4 +35,10 @@ public class WelcomeController {
 		return "welcome/page3";
 	}
 
+	@RequestMapping("/page4")
+	public String page4() {
+		testService.testInheritance();
+		return "welcome/page4";
+	}
+
 }

@@ -3,6 +3,7 @@ package eu.nyerel.panda.instrumentation;
 import eu.nyerel.panda.instrumentation.util.MethodBuildingUtil;
 import eu.nyerel.panda.instrumentation.util.NamingUtil;
 import javassist.*;
+import javassist.bytecode.AccessFlag;
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -10,7 +11,7 @@ import javassist.*;
 public abstract class AbstractMethodTransformer {
 
 	public void transform(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException, NotFoundException {
-		ctClass.addMethod(getCopy(ctClass, ctMethod));
+		ctClass.addMethod(getPrivateCopy(ctClass, ctMethod));
 		String transformedBody = createTransformedBody(ctMethod);
 		System.out.println("Transformed body of method " + ctMethod.getLongName() + ":\n" + transformedBody);
 		ctMethod.setBody(MethodBuildingUtil.wrapBrackets(transformedBody));
@@ -31,7 +32,7 @@ public abstract class AbstractMethodTransformer {
 	}
 
 	protected String getInternalMethodCall(CtMethod ctMethod) {
-		return getInternalMethodName(ctMethod) + "($$);";
+		return "this." + getInternalMethodName(ctMethod) + "($$);";
 	}
 
 	protected String getInternalMethodName(CtMethod ctMethod) {
@@ -40,8 +41,11 @@ public abstract class AbstractMethodTransformer {
 
 	protected abstract String uniqueTransformationName();
 
-	private CtMethod getCopy(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException {
-		return CtNewMethod.copy(ctMethod, getInternalMethodName(ctMethod), ctClass, null);
+	private CtMethod getPrivateCopy(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException {
+		CtMethod copy = CtNewMethod.copy(ctMethod, getInternalMethodName(ctMethod), ctClass, null);
+		int privateModifiers = AccessFlag.setPrivate(copy.getModifiers());
+		copy.setModifiers(privateModifiers);
+		return copy;
 	}
 
 }
