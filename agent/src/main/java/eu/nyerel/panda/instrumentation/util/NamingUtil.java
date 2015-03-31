@@ -6,7 +6,11 @@ package eu.nyerel.panda.instrumentation.util;
 public class NamingUtil {
 
 	public static String pandalize(String name) {
-		return "__" + name + "__$PANDA";
+		return pandalize(name, null);
+	}
+
+	public static String pandalize(String name, String suffix) {
+		return "__" + name + "__$PANDA" + (suffix != null ? "_" + suffix : "");
 	}
 
 }

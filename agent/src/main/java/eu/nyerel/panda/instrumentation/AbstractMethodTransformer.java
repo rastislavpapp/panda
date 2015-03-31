@@ -35,7 +35,7 @@ public abstract class AbstractMethodTransformer {
 	}
 
 	protected String getInternalMethodName(CtMethod ctMethod) {
-		return NamingUtil.pandalize(ctMethod.getName() + "_" + uniqueTransformationName());
+		return NamingUtil.pandalize(ctMethod.getName(), uniqueTransformationName());
 	}
 
 	protected abstract String uniqueTransformationName();
