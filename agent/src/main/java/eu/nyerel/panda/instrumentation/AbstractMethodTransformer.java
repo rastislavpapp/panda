@@ -32,7 +32,7 @@ public abstract class AbstractMethodTransformer {
 	}
 
 	protected String getInternalMethodCall(CtMethod ctMethod) {
-		return "this." + getInternalMethodName(ctMethod) + "($$);";
+		return getInternalMethodName(ctMethod) + "($$);";
 	}
 
 	protected String getInternalMethodName(CtMethod ctMethod) {
