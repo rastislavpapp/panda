@@ -21,6 +21,8 @@ public class Bootstrap {
 	}
 
 	public void init() {
+		System.out.println("Initializing Panda monitoring...");
+		System.out.println("Monitored classes = " + Configuration.getMonitoredClasses());
 		inst.addTransformer(new MonitorClassFileTransformer());
 		inst.addTransformer(new JdbcClassFileTransformer());
 		MonitoringEventListenerRegistry.register(MonitoringResultService.getInstance());
