@@ -24,11 +24,6 @@ public class JdbcClassFileTransformer extends AbstractClassFileTransformer imple
 			"org.postgresql.jdbc4.Jdbc4Statement");
 
 	private static final Set<String> PREPARED_STATEMENT_CLASSES = CollectionUtil.set(
-			"org.postgresql.jdbc2.AbstractJdbc2Statement",
-			"org.postgresql.jdbc3.AbstractJdbc3Statement",
-			"org.postgresql.jdbc3g.AbstractJdbc3gStatement",
-			"org.postgresql.jdbc4.AbstractJdbc4Statement",
-			"org.postgresql.jdbc4.Jdbc4Statement",
 			"org.postgresql.jdbc4.Jdbc4PreparedStatement");
 
 	private static final Set<String> CONNECTION_CLASSES = CollectionUtil.set(

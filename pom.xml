@@ -14,9 +14,10 @@
     </properties>
 
     <modules>
+        <module>interface</module>
         <module>agent</module>
         <module>test-app</module>
-        <module>web</module>
+        <!--<module>web</module>-->
     </modules>
 
     <build>

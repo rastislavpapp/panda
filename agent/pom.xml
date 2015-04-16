@@ -50,6 +50,12 @@
             <version>3.12.1.GA</version>
         </dependency>
 
+        <dependency>
+            <groupId>eu.nyerel.panda</groupId>
+            <artifactId>panda-interface</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

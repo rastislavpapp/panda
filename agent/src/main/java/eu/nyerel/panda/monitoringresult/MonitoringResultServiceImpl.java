@@ -12,18 +12,19 @@ import java.util.List;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public class MonitoringResultService implements MonitoringEventListener {
+public class MonitoringResultServiceImpl implements MonitoringResultService, MonitoringEventListener {
 
-	private static MonitoringResultService INSTANCE;
+	private static MonitoringResultServiceImpl INSTANCE;
 
 	private List<MonitoredEvent> data = Collections.synchronizedList(new ArrayList<MonitoredEvent>());
 
-	private MonitoringResultService() {
+	private MonitoringResultServiceImpl() {
+		super();
 	}
 
-	public static MonitoringResultService getInstance() {
+	public static MonitoringResultServiceImpl getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new MonitoringResultService();
+			INSTANCE = new MonitoringResultServiceImpl();
 		}
 		return INSTANCE;
 	}

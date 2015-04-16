@@ -1,11 +1,12 @@
 package eu.nyerel.panda.monitoringresult.calltree;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public class CallTreeNode {
+public class CallTreeNode implements Serializable {
 
 	private long id;
 	private CallTreeNodeType type;
