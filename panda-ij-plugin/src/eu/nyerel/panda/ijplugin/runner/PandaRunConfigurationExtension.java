@@ -29,11 +29,11 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
 	public <T extends RunConfigurationBase> void updateJavaParameters(T configuration, JavaParameters params, RunnerSettings runnerSettings) throws ExecutionException {
 		ParametersList vmParametersList = params.getVMParametersList();
 		vmParametersList.add("-javaagent:C:\\panda.jar");
-		vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClasses());
+		vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClasses(configuration));
 	}
 
-	private String getMonitoredClasses() {
-		String[] monitoredClasses = PandaSettings.getInstance().getMonitoredClassesArray();
+	private String getMonitoredClasses(RunConfigurationBase configuration) {
+		String[] monitoredClasses = PandaSettings.getInstance(configuration).getMonitoredClassesArray();
 		StringBuilder monitoredClassesStr = new StringBuilder();
 		if (monitoredClasses != null) {
 			for (int i = 0; i < monitoredClasses.length; i++) {
