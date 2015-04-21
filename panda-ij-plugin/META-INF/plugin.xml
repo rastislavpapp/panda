@@ -28,7 +28,7 @@
         <runConfigurationExtension implementation="eu.nyerel.panda.ijplugin.runner.PandaRunConfigurationExtension"/>
         <programRunner implementation="eu.nyerel.panda.ijplugin.runner.PandaProgramRunner"/>
         <executor implementation="eu.nyerel.panda.ijplugin.runner.PandaExecutor"/>
-        <toolWindow id="Panda" anchor="right" factoryClass="eu.nyerel.panda.ijplugin.runner.PandaCallTreeWindow"/>
+        <toolWindow id="Panda" anchor="right" factoryClass="eu.nyerel.panda.ijplugin.runner.calltree.PandaCallTreeWindow"/>
     </extensions>
 
     <application-components>

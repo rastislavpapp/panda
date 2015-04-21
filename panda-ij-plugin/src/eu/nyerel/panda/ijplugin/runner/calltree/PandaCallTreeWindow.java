@@ -1,4 +1,4 @@
-package eu.nyerel.panda.ijplugin.runner;
+package eu.nyerel.panda.ijplugin.runner.calltree;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
@@ -12,6 +12,7 @@ import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.tree.*;
 import java.awt.event.ActionEvent;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -25,18 +26,29 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 	private JPanel mainPanel;
 	private JButton refreshButton;
 	private JPanel callTreePanel;
+	private JTree callTree;
 
 	public PandaCallTreeWindow() {
 		refreshButton.setAction(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				callTreePanel.removeAll();
-				java.util.List<CallTreeNode> callTree = getCallTree();
-				for (CallTreeNode node : callTree) {
-					callTreePanel.add(new JLabel(node.getDescription()));
+				callTree.removeAll();
+				DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("root");
+				callTree.setModel(new DefaultTreeModel(rootNode));
+				callTree.setCellRenderer(new CellTreeNodeRenderer());
+				for (CallTreeNode node : getCallTreeRootNodes()) {
+					rootNode.add(createCallTreeNodeUI(node));
 				}
 			}
 		});
+	}
+
+	private MutableTreeNode createCallTreeNodeUI(CallTreeNode node) {
+		DefaultMutableTreeNode uiNode = new DefaultMutableTreeNode(node.getDescription());
+		for (CallTreeNode child : node.getChildren()) {
+			uiNode.add(createCallTreeNodeUI(child));
+		}
+		return uiNode;
 	}
 
 	@Override
@@ -47,7 +59,7 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 		cm.addContent(content);
 	}
 
-	private List<CallTreeNode> getCallTree() {
+	private List<CallTreeNode> getCallTreeRootNodes() {
 		Registry registry;
 		try {
 			registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
