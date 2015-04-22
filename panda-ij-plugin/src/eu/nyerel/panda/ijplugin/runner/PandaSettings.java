@@ -1,9 +1,9 @@
 package eu.nyerel.panda.ijplugin.runner;
 
-import com.intellij.execution.configurations.RunConfigurationBase;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.classFilter.ClassFilter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,39 +11,53 @@ import java.util.List;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public class PandaSettings {
+public enum PandaSettings {
+
+	INSTANCE;
 
 	private static final String PROPERTY_PANDA_MONITORED_CLASSES = "panda.monitored.classes";
 
-	private static PandaSettings INSTANCE;
-	private ClassFilter[] monitoredClasses;
-	private Project project;
+	public ClassFilter[] getMonitoredClasses(Project project) {
+		PropertiesComponent properties = PropertiesComponent.getInstance(project);
+		String[] classesProperty = properties.getValues(PROPERTY_PANDA_MONITORED_CLASSES);
+		if (classesProperty != null) {
+			return convertToMonitoredClasses(classesProperty);
+		} else {
+			return null;
+		}
+	}
 
-	public static PandaSettings getInstance(RunConfigurationBase configuration) {
-		if (INSTANCE == null) {
-			Project project = configuration.getProject();
-			PropertiesComponent properties = PropertiesComponent.getInstance(project);
-			String[] monitoredClassPatterns = properties.getValues(PROPERTY_PANDA_MONITORED_CLASSES);
-			List<ClassFilter> classFilterList = new ArrayList<ClassFilter>();
-			if (monitoredClassPatterns != null) {
-				for (String monitoredClassPattern : monitoredClassPatterns) {
-					ClassFilter classFilter = new ClassFilter(monitoredClassPattern);
-					classFilter.setEnabled(true);
-					classFilterList.add(classFilter);
+	public String getMonitoredClassesAsString(Project project) {
+		String[] monitoredClasses = convertToStringArray(getMonitoredClasses(project));
+		StringBuilder sb = new StringBuilder();
+		if (monitoredClasses != null) {
+			for (int i = 0; i < monitoredClasses.length; i++) {
+				sb.append(monitoredClasses[i]);
+				if (i < monitoredClasses.length - 1) {
+					sb.append(",");
 				}
 			}
-			INSTANCE = new PandaSettings();
-			INSTANCE.monitoredClasses = classFilterList.toArray(new ClassFilter[classFilterList.size()]);
-			INSTANCE.project = project;
 		}
-		return INSTANCE;
+		return sb.toString();
 	}
 
-	public ClassFilter[] getMonitoredClasses() {
-		return monitoredClasses;
+	public void setMonitoredClasses(Project project, ClassFilter[] monitoredClasses) {
+		PropertiesComponent properties = PropertiesComponent.getInstance(project);
+		properties.setValues(PandaSettings.PROPERTY_PANDA_MONITORED_CLASSES, convertToStringArray(monitoredClasses));
 	}
 
-	public String[] getMonitoredClassesArray() {
+	@NotNull
+	private ClassFilter[] convertToMonitoredClasses(String[] monitoredClassPatterns) {
+		List<ClassFilter> classFilterList = new ArrayList<ClassFilter>();
+		for (String monitoredClassPattern : monitoredClassPatterns) {
+			ClassFilter classFilter = new ClassFilter(monitoredClassPattern);
+			classFilter.setEnabled(true);
+			classFilterList.add(classFilter);
+		}
+		return classFilterList.toArray(new ClassFilter[classFilterList.size()]);
+	}
+
+	private String[] convertToStringArray(ClassFilter[] monitoredClasses) {
 		if (monitoredClasses == null) {
 			return null;
 		} else {
@@ -55,12 +69,6 @@ public class PandaSettings {
 			}
 			return list.toArray(new String[list.size()]);
 		}
-	}
-
-	public void setMonitoredClasses(ClassFilter[] monitoredClasses) {
-		this.monitoredClasses = monitoredClasses;
-		PropertiesComponent properties = PropertiesComponent.getInstance(project);
-		properties.setValues(PandaSettings.PROPERTY_PANDA_MONITORED_CLASSES, getMonitoredClassesArray());
 	}
 
 }

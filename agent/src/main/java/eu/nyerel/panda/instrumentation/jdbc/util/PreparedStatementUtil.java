@@ -10,11 +10,11 @@ import java.sql.PreparedStatement;
 public class PreparedStatementUtil {
 
 	public static void storePreparedStatementQuery(PreparedStatement st, String query) {
-		DataStorage.getInstance().store(st, query);
+		DataStorage.INSTANCE.store(st, query);
 	}
 
 	public static String getPreparedStatementQuery(PreparedStatement st) {
-		return (String) DataStorage.getInstance().load(st);
+		return (String) DataStorage.INSTANCE.load(st);
 	}
 
 }

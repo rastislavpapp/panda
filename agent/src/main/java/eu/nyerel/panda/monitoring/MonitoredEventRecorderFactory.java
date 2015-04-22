@@ -3,25 +3,14 @@ package eu.nyerel.panda.monitoring;
 /**
  * @author Rastislav Papp (rastislav.papp@ibacz.eu))
  */
-public class MonitoredEventRecorderFactory implements MonitoringEventListener {
+public enum MonitoredEventRecorderFactory implements MonitoringEventListener {
 
-	private static MonitoredEventRecorderFactory INSTANCE;
+	INSTANCE;
 
-	private final ThreadLocal<MonitoredEventRecorder> recorderTL =
-			new ThreadLocal<MonitoredEventRecorder>();
+	private final ThreadLocal<MonitoredEventRecorder> recorderTL = new ThreadLocal<MonitoredEventRecorder>();
 
-    private MonitoredEventRecorderFactory() {
-    }
-
-	public static MonitoredEventRecorderFactory getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new MonitoredEventRecorderFactory();
-		}
-		return INSTANCE;
-	}
-
-    public static MonitoredEventRecorder getRecorder() {
-		ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL = getInstance().recorderTL;
+    public MonitoredEventRecorder getRecorder() {
+		ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL = recorderTL;
 		MonitoredEventRecorder cs = callTreeRecorderTL.get();
         if (cs == null) {
             cs = new MonitoredEventRecorder();

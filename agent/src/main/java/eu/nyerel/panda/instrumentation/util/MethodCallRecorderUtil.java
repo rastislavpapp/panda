@@ -11,16 +11,16 @@ import eu.nyerel.panda.monitoring.MonitoredEventRecorderFactory;
 public class MethodCallRecorderUtil {
 
 	public static void startMethod(String methodSignature) {
-		MonitoredEventRecorder recorder = MonitoredEventRecorderFactory.getRecorder();
+		MonitoredEventRecorder recorder = MonitoredEventRecorderFactory.INSTANCE.getRecorder();
 		recorder.startEvent(new MethodCall(recorder.getCurrentNode(), methodSignature));
 	}
 
 	public static void finishCurrentMethod() {
-		MonitoredEventRecorderFactory.getRecorder().finishCurrentEvent();
+		MonitoredEventRecorderFactory.INSTANCE.getRecorder().finishCurrentEvent();
 	}
 
 	public static void addQuery(String query, long duration) {
-		MonitoredEventRecorder recorder = MonitoredEventRecorderFactory.getRecorder();
+		MonitoredEventRecorder recorder = MonitoredEventRecorderFactory.INSTANCE.getRecorder();
 		recorder.startEvent(new DatabaseQuery(recorder.getCurrentNode(), query, duration));
 		recorder.finishCurrentEvent();
 	}

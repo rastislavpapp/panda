@@ -1,7 +1,6 @@
 package eu.nyerel.panda.ijplugin.runner;
 
 import com.intellij.execution.configurations.RunConfigurationBase;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -16,15 +15,12 @@ import java.awt.*;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public class PandaSettingsEditor extends SettingsEditor<RunConfigurationBase> {
-
-	private final Project project;
+public class PandaSettingsEditor<P extends RunConfigurationBase> extends SettingsEditor<P> {
 
 	private ClassFilterEditor monitoredClassesEditor;
 	private final JPanel mainPanel;
 
 	public PandaSettingsEditor(Project project) {
-		this.project = project;
 		this.mainPanel = new JPanel(new GridBagLayout());
 		this.monitoredClassesEditor = new ClassFilterEditor(project);
 		this.monitoredClassesEditor.setClassDelimiter(".");
@@ -33,14 +29,14 @@ public class PandaSettingsEditor extends SettingsEditor<RunConfigurationBase> {
 	}
 
 	@Override
-	protected void resetEditorFrom(RunConfigurationBase s) {
-		ClassFilter[] monitoredClasses = PandaSettings.getInstance(s).getMonitoredClasses();
+	protected void resetEditorFrom(P config) {
+		ClassFilter[] monitoredClasses = PandaSettings.INSTANCE.getMonitoredClasses(config.getProject());
 		monitoredClassesEditor.setFilters(monitoredClasses);
 	}
 
 	@Override
-	protected void applyEditorTo(RunConfigurationBase config) throws ConfigurationException {
-		PandaSettings.getInstance(config).setMonitoredClasses(monitoredClassesEditor.getFilters());
+	protected void applyEditorTo(P config) throws ConfigurationException {
+		PandaSettings.INSTANCE.setMonitoredClasses(config.getProject(), monitoredClassesEditor.getFilters());
 	}
 
 	@NotNull

@@ -7,6 +7,7 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
 import eu.nyerel.panda.Constants;
+import eu.nyerel.panda.ijplugin.runner.AgentFacade;
 import eu.nyerel.panda.monitoringresult.MonitoringResultService;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 				DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("root");
 				callTree.setModel(new DefaultTreeModel(rootNode));
 				callTree.setCellRenderer(new CellTreeNodeRenderer());
-				for (CallTreeNode node : getCallTreeRootNodes()) {
+				for (CallTreeNode node : AgentFacade.INSTANCE.getCallTree()) {
 					rootNode.add(createCallTreeNodeUI(node));
 				}
 			}
@@ -57,17 +58,6 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 		ContentFactory factory = cm.getFactory();
 		Content content = factory.createContent(mainPanel, "", false);
 		cm.addContent(content);
-	}
-
-	private List<CallTreeNode> getCallTreeRootNodes() {
-		Registry registry;
-		try {
-			registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
-			MonitoringResultService monitoringResultService = (MonitoringResultService) registry.lookup(Constants.RMI_ID);
-			return monitoringResultService.getCallTree();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 }

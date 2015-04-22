@@ -13,4 +13,6 @@ public interface MonitoringResultService extends Remote {
 
 	List<CallTreeNode> getCallTree() throws RemoteException;
 
+	void shutdown() throws RemoteException;
+
 }

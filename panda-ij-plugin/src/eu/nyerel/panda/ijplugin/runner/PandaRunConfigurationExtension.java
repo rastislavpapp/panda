@@ -12,6 +12,7 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.ui.classFilter.ClassFilter;
 import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -21,38 +22,31 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
 
 	@Nullable
 	@Override
-	protected SettingsEditor<RunConfigurationBase> createEditor(RunConfigurationBase configuration) {
-		return new PandaSettingsEditor(configuration.getProject());
+	protected <P extends RunConfigurationBase> SettingsEditor<P> createEditor(@NotNull P configuration) {
+		return new PandaSettingsEditor<P>(configuration.getProject());
 	}
 
 	@Override
-	public <T extends RunConfigurationBase> void updateJavaParameters(T configuration, JavaParameters params, RunnerSettings runnerSettings) throws ExecutionException {
+	public <P extends RunConfigurationBase> void updateJavaParameters(P configuration, JavaParameters params, RunnerSettings runnerSettings) throws ExecutionException {
 		ParametersList vmParametersList = params.getVMParametersList();
 		vmParametersList.add("-javaagent:C:\\panda.jar");
-		vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClasses(configuration));
+		vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(configuration));
 	}
 
-	private String getMonitoredClasses(RunConfigurationBase configuration) {
-		String[] monitoredClasses = PandaSettings.getInstance(configuration).getMonitoredClassesArray();
-		StringBuilder monitoredClassesStr = new StringBuilder();
-		if (monitoredClasses != null) {
-			for (int i = 0; i < monitoredClasses.length; i++) {
-				monitoredClassesStr.append(monitoredClasses[i]);
-				if (i < monitoredClasses.length - 1) {
-					monitoredClassesStr.append(",");
-				}
-			}
-		}
-		return monitoredClassesStr.toString();
+	@NotNull
+	private <P extends RunConfigurationBase> String getMonitoredClassesString(P configuration) {
+		return PandaSettings.INSTANCE.getMonitoredClassesAsString(configuration.getProject());
 	}
 
 	@Override
-	protected void readExternal(RunConfigurationBase runConfiguration, Element element) throws InvalidDataException {
+	protected void readExternal(@NotNull RunConfigurationBase runConfiguration, @NotNull Element element)
+			throws InvalidDataException {
 
 	}
 
 	@Override
-	protected void writeExternal(RunConfigurationBase runConfiguration, Element element) throws WriteExternalException {
+	protected void writeExternal(@NotNull RunConfigurationBase runConfiguration, @NotNull Element element)
+			throws WriteExternalException {
 
 	}
 
@@ -63,7 +57,7 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
 	}
 
 	@Override
-	protected boolean isApplicableFor(RunConfigurationBase configuration) {
+	protected boolean isApplicableFor(@NotNull RunConfigurationBase configuration) {
 		if (configuration instanceof ApplicationConfiguration) {
 			return false;
 		} else {

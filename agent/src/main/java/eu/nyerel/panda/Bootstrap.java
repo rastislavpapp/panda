@@ -32,25 +32,11 @@ public class Bootstrap {
 		System.out.println("Monitored classes = " + Configuration.getMonitoredClasses());
 		inst.addTransformer(new MonitorClassFileTransformer());
 		inst.addTransformer(new JdbcClassFileTransformer());
-		MonitoringEventListenerRegistry.register(createMonitoringResultServiceInstance());
-		MonitoringEventListenerRegistry.register(MonitoredEventRecorderFactory.getInstance());
-		MonitoringEventListenerRegistry.register(DataStorage.getInstance());
-	}
+		MonitoringEventListenerRegistry.register(MonitoringResultServiceImpl.INSTANCE);
+		MonitoringEventListenerRegistry.register(MonitoredEventRecorderFactory.INSTANCE);
+		MonitoringEventListenerRegistry.register(DataStorage.INSTANCE);
 
-	private MonitoringResultServiceImpl createMonitoringResultServiceInstance() {
-		try {
-			MonitoringResultServiceImpl instance = MonitoringResultServiceImpl.getInstance();
-			MonitoringResultService exportedInstance = (MonitoringResultService) UnicastRemoteObject.exportObject(
-					instance, Constants.RMI_PORT);
-			Registry registry = LocateRegistry.createRegistry(Constants.RMI_PORT);
-			registry.bind(Constants.RMI_ID, exportedInstance);
-			System.out.println("Monitoring result service RMI bound");
-			return instance;
-		} catch (RemoteException e) {
-			throw new RuntimeException(e);
-		} catch (AlreadyBoundException e) {
-			throw new RuntimeException(e);
-		}
+		MonitoringResultServiceImpl.INSTANCE.startRemote();
 	}
 
 }

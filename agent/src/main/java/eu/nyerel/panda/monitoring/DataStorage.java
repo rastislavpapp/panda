@@ -6,21 +6,11 @@ import java.util.Map;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public class DataStorage implements MonitoringEventListener {
+public enum DataStorage implements MonitoringEventListener {
+
+	INSTANCE;
 
 	private final ThreadLocal<Map<Object, Object>> dataMap = new ThreadLocal<Map<Object, Object>>();
-
-	private static DataStorage INSTANCE;
-
-	private DataStorage() {
-	}
-
-	public static DataStorage getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new DataStorage();
-		}
-		return INSTANCE;
-	}
 
 	public void store(Object key, Object value) {
 		getDataMap().put(key, value);
