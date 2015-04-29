@@ -15,6 +15,10 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
@@ -29,8 +33,12 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
 	@Override
 	public <P extends RunConfigurationBase> void updateJavaParameters(P configuration, JavaParameters params, RunnerSettings runnerSettings) throws ExecutionException {
 		ParametersList vmParametersList = params.getVMParametersList();
-		vmParametersList.add("-javaagent:C:\\panda.jar");
+		vmParametersList.add("-javaagent:" + getAgentFilePath());
 		vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(configuration));
+	}
+
+	private String getAgentFilePath() {
+		return JarUtils.geUnpackedResourcePath("/panda-agent.jar");
 	}
 
 	@NotNull

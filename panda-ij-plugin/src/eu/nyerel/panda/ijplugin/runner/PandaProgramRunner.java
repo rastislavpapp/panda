@@ -42,7 +42,9 @@ public class PandaProgramRunner extends DefaultJavaProgramRunner {
 				processHandler.addProcessListener(new CapturingProcessAdapter() {
 					@Override
 					public void processWillTerminate(ProcessEvent event, boolean willBeDestroyed) {
-						AgentFacade.INSTANCE.shutdown();
+						if (AgentFacade.INSTANCE.isRunning()) {
+							AgentFacade.INSTANCE.shutdown();
+						}
 					}
 				});
 			}
