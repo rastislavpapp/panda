@@ -4,6 +4,7 @@ import eu.nyerel.panda.Constants;
 import eu.nyerel.panda.monitoringresult.MonitoringResultService;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 
+import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -28,9 +29,14 @@ public enum AgentFacade {
 		}
 	}
 
+	public boolean isRunning() {
+		return getMonitoringResultService() != null;
+	}
+
 	public void shutdown() {
 		try {
-			getMonitoringResultService().shutdown();
+			monitoringResultService.shutdown();
+			monitoringResultService = null;
 		} catch (RemoteException e) {
 			throw new RuntimeException(e);
 		}
@@ -40,12 +46,14 @@ public enum AgentFacade {
 		if (registry == null) {
 			try {
 				registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
-				monitoringResultService = (MonitoringResultService) registry.lookup(Constants.RMI_ID);
 			} catch (RemoteException e) {
 				throw new RuntimeException(e);
-			} catch (NotBoundException e) {
-				throw new RuntimeException(e);
 			}
+		}
+		try {
+			monitoringResultService = (MonitoringResultService) registry.lookup(Constants.RMI_ID);
+		} catch (Exception e) {
+			monitoringResultService = null;
 		}
 	}
 
