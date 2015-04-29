@@ -6,17 +6,17 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
-import eu.nyerel.panda.Constants;
+import com.intellij.ui.treeStructure.treetable.*;
 import eu.nyerel.panda.ijplugin.runner.AgentFacade;
-import eu.nyerel.panda.monitoringresult.MonitoringResultService;
+import eu.nyerel.panda.ijplugin.runner.calltree.renderer.DurationColumnRenderer;
+import eu.nyerel.panda.ijplugin.runner.calltree.renderer.MethodColumnRenderer;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.tree.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.event.ActionEvent;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.List;
 
 /**
@@ -27,29 +27,26 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 	private JPanel mainPanel;
 	private JButton refreshButton;
 	private JPanel callTreePanel;
-	private JTree callTree;
+	private TreeTable callTreeTable;
 
 	public PandaCallTreeWindow() {
 		refreshButton.setAction(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				callTree.removeAll();
-				DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("root");
-				callTree.setModel(new DefaultTreeModel(rootNode));
-				callTree.setCellRenderer(new CellTreeNodeRenderer());
-				for (CallTreeNode node : AgentFacade.INSTANCE.getCallTree()) {
-					rootNode.add(createCallTreeNodeUI(node));
+				List<CallTreeNode> callTreeNodes = AgentFacade.INSTANCE.getCallTree();
+				if (callTreeNodes.isEmpty()) {
+					callTreeTable.setModel(new EmptyCallTreeModel());
+					callTreeTable.setRootVisible(true);
+				} else {
+					callTreeTable.setModel(new CallTreeNodeModel(callTreeNodes));
+					callTreeTable.setRootVisible(false);
+					TableColumnModel columnModel = callTreeTable.getColumnModel();
+					columnModel.getColumn(1).setCellRenderer(new DurationColumnRenderer());
+					callTreeTable.setTreeCellRenderer(new MethodColumnRenderer());
+
 				}
 			}
 		});
-	}
-
-	private MutableTreeNode createCallTreeNodeUI(CallTreeNode node) {
-		DefaultMutableTreeNode uiNode = new DefaultMutableTreeNode(node.getDescription());
-		for (CallTreeNode child : node.getChildren()) {
-			uiNode.add(createCallTreeNodeUI(child));
-		}
-		return uiNode;
 	}
 
 	@Override
@@ -58,6 +55,13 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 		ContentFactory factory = cm.getFactory();
 		Content content = factory.createContent(mainPanel, "", false);
 		cm.addContent(content);
+	}
+
+	private void createUIComponents() {
+		callTreeTable = new TreeTable(new EmptyCallTreeModel());
+		callTreeTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		callTreeTable.setShowGrid(true);
+		callTreeTable.getTree().setShowsRootHandles(false);
 	}
 
 }

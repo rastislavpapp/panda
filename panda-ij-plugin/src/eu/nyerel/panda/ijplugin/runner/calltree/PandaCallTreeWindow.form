@@ -36,12 +36,9 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="c6ea1" class="javax.swing.JTree" binding="callTree">
+              <component id="d1af2" class="com.intellij.ui.treeStructure.treetable.TreeTable" binding="callTreeTable" custom-create="true">
                 <constraints/>
-                <properties>
-                  <rootVisible value="true"/>
-                  <showsRootHandles value="true"/>
-                </properties>
+                <properties/>
               </component>
             </children>
           </scrollpane>
