@@ -57,8 +57,6 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 
 	private void createUIComponents() {
 		callTreeTable = new TreeTable(new EmptyCallTreeModel());
-		callTreeTable.setShowGrid(true);
-		callTreeTable.getTree().setShowsRootHandles(false);
 	}
 
 }
