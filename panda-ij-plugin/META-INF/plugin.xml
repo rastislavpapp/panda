@@ -1,8 +1,8 @@
 <idea-plugin version="2">
-    <id>com.yourcompany.unique.plugin.id</id>
-    <name>Plugin display name here</name>
-    <version>1.0</version>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>eu.nyerel.panda.ij-plugin</id>
+    <name>Panda Monitoring/Profiler</name>
+    <version>0.1</version>
+    <vendor email="rastislav.papp@gmail.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
     <description><![CDATA[
       Enter short description for your plugin here.<br>
