@@ -22,6 +22,8 @@ import java.awt.*;
  */
 public class PandaCallTreeWindow implements ToolWindowFactory {
 
+	public static final String PANDA_TOOL_WINDOW_ID = "Panda";
+
 	private JPanel mainPanel;
 	private JPanel callTreePanel;
 	private TreeTable callTreeTable;

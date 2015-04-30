@@ -29,6 +29,7 @@
         <toolWindow id="Panda"
                     anchor="right"
                     factoryClass="eu.nyerel.panda.ijplugin.runner.calltree.PandaCallTreeWindow"
+                    conditionClass="eu.nyerel.panda.ijplugin.runner.calltree.CallTreeToolWindowCondition"
                     icon="/panda.png"/>
     </extensions>
 
