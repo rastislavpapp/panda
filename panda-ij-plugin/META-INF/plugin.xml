@@ -1,17 +1,15 @@
 <idea-plugin version="2">
     <id>eu.nyerel.panda.ij-plugin</id>
-    <name>Panda Monitoring/Profiler</name>
+    <name>Panda Profiler</name>
     <version>0.1</version>
-    <vendor email="rastislav.papp@gmail.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="rastislav.papp@gmail.com" url="http://nyerel.eu/panda">Rastislav Papp</vendor>
 
     <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Simple profiler implemented as a java agent library. Measures methods (based on monitoring settings in current
+      'Run configuration') and displays results as a call tree in a tool window.
     ]]></description>
 
     <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
     ]]>
     </change-notes>
 
