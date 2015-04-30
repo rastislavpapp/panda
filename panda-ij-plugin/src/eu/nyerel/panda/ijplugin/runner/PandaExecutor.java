@@ -2,6 +2,7 @@ package eu.nyerel.panda.ijplugin.runner;
 
 import com.intellij.execution.Executor;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -26,7 +27,7 @@ public class PandaExecutor extends Executor {
 
 	@NotNull
 	public Icon getIcon() {
-		return AllIcons.Actions.Execute;
+		return IconLoader.getIcon("/panda-run.png", this.getClass());
 	}
 
 	public Icon getDisabledIcon() {
