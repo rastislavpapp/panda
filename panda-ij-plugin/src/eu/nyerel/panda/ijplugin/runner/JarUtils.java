@@ -30,25 +30,23 @@ public class JarUtils {
 	private static File getAsTempFile(InputStream is) {
 		OutputStream os = null;
 		File tempFile = new File(getTempDir().getAbsolutePath(), PANDA_AGENT_JAR_FILE_NAME);
-		if (!tempFile.isFile()) {
+		try {
+			boolean success = tempFile.createNewFile();
+			if (!success) {
+				throw new IOException("Unable to create file " + tempFile.getAbsolutePath());
+			}
+			os = new FileOutputStream(tempFile);
+			copy(is, os);
+		} catch (Exception e) {
+			LOGGER.error(e);
+		} finally {
 			try {
-				boolean success = tempFile.createNewFile();
-				if (!success) {
-					throw new IOException("Unable to create file " + tempFile.getAbsolutePath());
+				is.close();
+				if (os != null) {
+					os.close();
 				}
-				os = new FileOutputStream(tempFile);
-				copy(is, os);
 			} catch (Exception e) {
 				LOGGER.error(e);
-			} finally {
-				try {
-					is.close();
-					if (os != null) {
-						os.close();
-					}
-				} catch (Exception e) {
-					LOGGER.error(e);
-				}
 			}
 		}
 		return tempFile;
