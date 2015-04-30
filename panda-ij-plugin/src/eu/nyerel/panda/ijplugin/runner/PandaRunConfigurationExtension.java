@@ -34,15 +34,6 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
 	public <P extends RunConfigurationBase> void updateJavaParameters(P configuration, JavaParameters params, RunnerSettings runnerSettings) throws ExecutionException {
 	}
 
-	private String getAgentFilePath() {
-		return JarUtils.geUnpackedResourcePath("/panda-agent.jar");
-	}
-
-	@NotNull
-	private <P extends RunConfigurationBase> String getMonitoredClassesString(P configuration) {
-		return PandaSettings.INSTANCE.getMonitoredClassesAsString(configuration.getProject());
-	}
-
 	@Override
 	protected void readExternal(@NotNull RunConfigurationBase runConfiguration, @NotNull Element element)
 			throws InvalidDataException {
