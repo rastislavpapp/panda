@@ -31,9 +31,11 @@ public class JarUtils {
 		OutputStream os = null;
 		File tempFile = new File(getTempDir().getAbsolutePath(), PANDA_AGENT_JAR_FILE_NAME);
 		try {
-			boolean success = tempFile.createNewFile();
-			if (!success) {
-				throw new IOException("Unable to create file " + tempFile.getAbsolutePath());
+			if (!tempFile.isFile()) {
+				boolean success = tempFile.createNewFile();
+				if (!success) {
+					throw new IOException("Unable to create file " + tempFile.getAbsolutePath());
+				}
 			}
 			os = new FileOutputStream(tempFile);
 			copy(is, os);
