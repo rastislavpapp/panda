@@ -32,9 +32,6 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
 
 	@Override
 	public <P extends RunConfigurationBase> void updateJavaParameters(P configuration, JavaParameters params, RunnerSettings runnerSettings) throws ExecutionException {
-		ParametersList vmParametersList = params.getVMParametersList();
-		vmParametersList.add("-javaagent:" + getAgentFilePath());
-		vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(configuration));
 	}
 
 	private String getAgentFilePath() {

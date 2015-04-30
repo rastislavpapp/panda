@@ -1,9 +1,7 @@
 package eu.nyerel.panda.ijplugin.runner;
 
 import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.RunConfigurationBase;
-import com.intellij.execution.configurations.RunProfile;
-import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.configurations.*;
 import com.intellij.execution.impl.DefaultJavaProgramRunner;
 import com.intellij.execution.process.CapturingProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
@@ -12,6 +10,7 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ExecutionUtil;
 import com.intellij.execution.runners.RunConfigurationWithSuppressedDefaultRunAction;
 import com.intellij.execution.ui.RunContentDescriptor;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +29,26 @@ public class PandaProgramRunner extends DefaultJavaProgramRunner {
 		} catch (Exception ex) {
 			return false;
 		}
+	}
+
+	@Override
+	public void patch(JavaParameters javaParameters, RunnerSettings settings, RunProfile runProfile, boolean beforeExecution) throws ExecutionException {
+		super.patch(javaParameters, settings, runProfile, beforeExecution);
+		if (beforeExecution) {
+			ParametersList vmParametersList = javaParameters.getVMParametersList();
+			vmParametersList.add("-javaagent:" + getAgentFilePath());
+			Project project = ((RunConfigurationBase) runProfile).getProject();
+			vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(project));
+		}
+	}
+
+	private String getAgentFilePath() {
+		return JarUtils.geUnpackedResourcePath("/panda-agent.jar");
+	}
+
+	@NotNull
+	private <P extends RunConfigurationBase> String getMonitoredClassesString(Project project) {
+		return PandaSettings.INSTANCE.getMonitoredClassesAsString(project);
 	}
 
 	@Override
