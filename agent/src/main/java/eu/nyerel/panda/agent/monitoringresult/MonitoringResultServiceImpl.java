@@ -66,7 +66,7 @@ public enum MonitoringResultServiceImpl implements MonitoringResultService, Moni
 		return new CallTreeCreator().create(data);
 	}
 
-	public void clearData() {
+	public void clear() {
 		data.clear();
 	}
 

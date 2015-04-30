@@ -15,4 +15,6 @@ public interface MonitoringResultService extends Remote {
 
 	void shutdown() throws RemoteException;
 
+	void clear() throws RemoteException;
+
 }

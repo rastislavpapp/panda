@@ -44,6 +44,8 @@
         <group id="CallTreeToolWindowGroup">
             <action id="refreshCallTree"
                     class="eu.nyerel.panda.ijplugin.runner.calltree.action.RefreshCallTreeButton"/>
+            <action id="clearCallTree"
+                    class="eu.nyerel.panda.ijplugin.runner.calltree.action.ClearCallTreeButton"/>
         </group>
     </actions>
 

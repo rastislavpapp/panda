@@ -64,4 +64,11 @@ public enum AgentFacade {
 		return monitoringResultService;
 	}
 
+	public void clear() {
+		try {
+			getMonitoringResultService().clear();
+		} catch (RemoteException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

@@ -10,6 +10,7 @@ import eu.nyerel.panda.ijplugin.runner.calltree.renderer.DurationColumnRenderer;
 import eu.nyerel.panda.ijplugin.runner.calltree.renderer.MethodColumnRenderer;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 
+import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import java.util.List;
 
@@ -20,6 +21,10 @@ public class RefreshCallTreeButton extends CallTreeAction {
 
 	public RefreshCallTreeButton() {
 		super("Refresh", IconLoader.findIcon("/actions/refresh.png"));
+	}
+
+	public RefreshCallTreeButton(String text, Icon icon) {
+		super(text, icon);
 	}
 
 	@Override
