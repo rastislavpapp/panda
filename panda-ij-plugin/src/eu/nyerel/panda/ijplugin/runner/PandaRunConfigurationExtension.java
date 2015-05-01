@@ -54,11 +54,7 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
 
 	@Override
 	protected boolean isApplicableFor(@NotNull RunConfigurationBase configuration) {
-		if (configuration instanceof ApplicationConfiguration) {
-			return false;
-		} else {
-			return true;
-		}
+		return true;
 	}
 
 }
