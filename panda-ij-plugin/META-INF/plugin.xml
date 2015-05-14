@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>eu.nyerel.panda.ij-plugin</id>
     <name>Panda Profiler</name>
-    <version>0.1</version>
+    <version>0.2</version>
     <vendor email="rastislav.papp@gmail.com" url="http://nyerel.eu/panda">Rastislav Papp</vendor>
 
     <description><![CDATA[
