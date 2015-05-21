@@ -2,6 +2,7 @@ package eu.nyerel.panda.agent.instrumentation;
 
 import eu.nyerel.panda.agent.instrumentation.util.MethodBuildingUtil;
 import eu.nyerel.panda.agent.instrumentation.util.NamingUtil;
+import eu.nyerel.panda.agent.util.Log;
 import javassist.*;
 import javassist.bytecode.AccessFlag;
 
@@ -13,7 +14,7 @@ public abstract class AbstractMethodTransformer {
 	public void transform(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException, NotFoundException {
 		ctClass.addMethod(getPrivateCopy(ctClass, ctMethod));
 		String transformedBody = createTransformedBody(ctMethod);
-		System.out.println("Transformed body of method " + ctMethod.getLongName() + ":\n" + transformedBody);
+		Log.debug("Transforming {0}", ctMethod.getLongName());
 		ctMethod.setBody(MethodBuildingUtil.wrapBrackets(transformedBody));
 	}
 

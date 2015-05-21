@@ -6,6 +6,7 @@ import eu.nyerel.panda.agent.monitoring.DataStorage;
 import eu.nyerel.panda.agent.monitoring.MonitoredEventRecorderFactory;
 import eu.nyerel.panda.agent.monitoring.MonitoringEventListenerRegistry;
 import eu.nyerel.panda.agent.monitoringresult.MonitoringResultServiceImpl;
+import eu.nyerel.panda.agent.util.Log;
 
 import java.lang.instrument.Instrumentation;
 import java.util.List;
@@ -28,10 +29,11 @@ public class Bootstrap {
 	}
 
 	public void init() {
-		System.out.println("Initializing Panda monitoring...");
+		initLogLevel();
+		Log.info("Initializing Panda monitoring...");
 		List<String> monitoredClasses = Configuration.getMonitoredClasses();
 		validateMonitoredClasses(monitoredClasses);
-		System.out.println("Monitored classes = " + monitoredClasses);
+		Log.info("Monitored classes = {0}", monitoredClasses);
 		inst.addTransformer(new MonitorClassFileTransformer());
 		inst.addTransformer(new JdbcClassFileTransformer());
 		MonitoringEventListenerRegistry.register(MonitoringResultServiceImpl.INSTANCE);
@@ -39,6 +41,13 @@ public class Bootstrap {
 		MonitoringEventListenerRegistry.register(DataStorage.INSTANCE);
 
 		MonitoringResultServiceImpl.INSTANCE.startRemote();
+	}
+
+	private void initLogLevel() {
+		Log.Level level = Configuration.getLogLevel();
+		if (level != null) {
+			Log.setLevel(level);
+		}
 	}
 
 	private void validateMonitoredClasses(List<String> monitoredClasses) {

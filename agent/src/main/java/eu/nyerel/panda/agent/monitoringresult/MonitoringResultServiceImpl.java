@@ -4,6 +4,7 @@ import eu.nyerel.panda.Constants;
 import eu.nyerel.panda.agent.monitoring.MonitoredEvent;
 import eu.nyerel.panda.agent.monitoring.MonitoringEventListener;
 import eu.nyerel.panda.agent.monitoringresult.calltree.CallTreeCreator;
+import eu.nyerel.panda.agent.util.Log;
 import eu.nyerel.panda.monitoringresult.MonitoringResultService;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 
@@ -33,7 +34,7 @@ public enum MonitoringResultServiceImpl implements MonitoringResultService, Moni
 		try {
 			Remote remote = UnicastRemoteObject.exportObject(this, Constants.RMI_PORT);
 			getOrCreateRegistry().bind(Constants.RMI_ID, remote);
-			System.out.println("Monitoring result service RMI bound");
+			Log.debug("Monitoring result service RMI bound");
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -44,7 +45,7 @@ public enum MonitoringResultServiceImpl implements MonitoringResultService, Moni
 			try {
 				UnicastRemoteObject.unexportObject(this, true);
 				registry.unbind(Constants.RMI_ID);
-				System.out.println("Monitoring result service RMI unbound");
+				Log.debug("Monitoring result service RMI unbound");
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

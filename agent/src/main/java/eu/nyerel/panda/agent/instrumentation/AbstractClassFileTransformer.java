@@ -1,5 +1,6 @@
 package eu.nyerel.panda.agent.instrumentation;
 
+import eu.nyerel.panda.agent.util.Log;
 import javassist.*;
 
 import java.lang.instrument.ClassFileTransformer;
@@ -34,7 +35,7 @@ public abstract class AbstractClassFileTransformer implements ClassFileTransform
 					classfileBuffer = ctClass.toBytecode();
 				}
 			} catch (Exception e) {
-				e.printStackTrace(); //rethrowing the exception not wanted, it gets consumed and not logged
+				Log.error("Error while transforming class {0}", e, className);
 			}
 		}
 		return classfileBuffer;
