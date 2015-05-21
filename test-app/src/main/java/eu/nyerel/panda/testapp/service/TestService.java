@@ -1,9 +1,9 @@
 package eu.nyerel.panda.testapp.service;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import java.sql.*;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -11,14 +11,8 @@ import java.sql.*;
 @Component
 public class TestService {
 
-	@Value("${db-jdbc-url}")
-	private String jdbcUrl;
-	@Value("${db-driver-name}")
-	private String driverName;
-	@Value("${db-user-name}")
-	private String userName;
-	@Value("${db-password}")
-	private String password;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	public void fastCall() {
 		recursiveInternalCall(10, false);
@@ -28,18 +22,9 @@ public class TestService {
 		new InheritanceTestChild().doNothing("abc");
 	}
 
+	@Transactional
 	public void callDatabase() {
-		try {
-			Class.forName(driverName);
-			Connection conn = DriverManager.getConnection(jdbcUrl, userName, password);
-			PreparedStatement statement = conn.prepareStatement("insert into person (firstName, lastName) values (?, ?)");
-			statement.setString(1, "Janko");
-			statement.setString(2, "Hrasko");
-			statement.execute();
-			conn.close();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		jdbcTemplate.update("insert into person (firstName, lastName) values (?, ?)", "Janko", "Hrasko");
 	}
 
 	public String makeInternalCalls(int numberOfCalls) {

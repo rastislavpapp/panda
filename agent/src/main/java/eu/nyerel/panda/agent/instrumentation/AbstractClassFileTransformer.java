@@ -26,7 +26,7 @@ public abstract class AbstractClassFileTransformer implements ClassFileTransform
 		if (shouldTransform(className)) {
 			registerClassLoader(loader);
 			try {
-				CtClass ctClass = CLASS_POOL.get(className);
+				CtClass ctClass = getCtClass(className, classfileBuffer);
 				if (!alreadyTransformed(ctClass) && !ctClass.isInterface()) {
 					ctClass.defrost();
 					doTransform(ctClass);
@@ -38,6 +38,20 @@ public abstract class AbstractClassFileTransformer implements ClassFileTransform
 			}
 		}
 		return classfileBuffer;
+	}
+
+	private CtClass getCtClass(String className, byte[] classfileBuffer) {
+		try {
+			return CLASS_POOL.get(className);
+		} catch (NotFoundException ex) {
+			CLASS_POOL.appendClassPath(new ByteArrayClassPath(className, classfileBuffer));
+			try {
+				return CLASS_POOL.getCtClass(className);
+			} catch (NotFoundException innerEx) {
+				throw new IllegalStateException("After adding " + className + " to the javassist classPool, " +
+						"it is still not accessible. Should never happen.", innerEx);
+			}
+		}
 	}
 
 	private String canonizeClassName(String className) {
