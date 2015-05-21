@@ -28,7 +28,7 @@ public class Log {
 
     }
 
-    private static Level LEVEL = Level.DEBUG;
+    private static Level LEVEL = Level.INFO;
     private static PrintStream OUTPUT = System.out;
 
     public static void fatal(String message, Object ... params) {
