@@ -19,39 +19,39 @@ import java.util.List;
  */
 public class RefreshCallTreeButton extends CallTreeAction {
 
-	public RefreshCallTreeButton() {
-		super("Refresh", IconLoader.findIcon("/actions/refresh.png"));
-	}
+    public RefreshCallTreeButton() {
+        super("Refresh", IconLoader.findIcon("/actions/refresh.png"));
+    }
 
-	public RefreshCallTreeButton(String text, Icon icon) {
-		super(text, icon);
-	}
+    public RefreshCallTreeButton(String text, Icon icon) {
+        super(text, icon);
+    }
 
-	@Override
-	protected void performAction(AnActionEvent e, TreeTable callTreeTable) {
-		if (AgentFacade.INSTANCE.isRunning()) {
-			List<CallTreeNode> callTreeNodes = AgentFacade.INSTANCE.getCallTree();
-			if (callTreeNodes.isEmpty()) {
-				callTreeTable.setModel(new EmptyCallTreeModel());
-				callTreeTable.setRootVisible(true);
-			} else {
-				callTreeTable.setModel(new CallTreeNodeModel(callTreeNodes));
-				callTreeTable.setRootVisible(false);
-				TableColumnModel columnModel = callTreeTable.getColumnModel();
-				columnModel.getColumn(1).setCellRenderer(new DurationColumnRenderer());
-				callTreeTable.setTreeCellRenderer(new MethodColumnRenderer());
-				callTreeTable.getColumnModel().getColumn(0).setPreferredWidth(450);
-				callTreeTable.getColumnModel().getColumn(1).setWidth(50);
-			}
-		} else {
-			setEnabled(false);
-			updateButton(e);
-		}
-	}
+    @Override
+    protected void performAction(AnActionEvent e, TreeTable callTreeTable) {
+        if (AgentFacade.INSTANCE.isRunning()) {
+            List<CallTreeNode> callTreeNodes = AgentFacade.INSTANCE.getCallTree();
+            if (callTreeNodes.isEmpty()) {
+                callTreeTable.setModel(new EmptyCallTreeModel());
+                callTreeTable.setRootVisible(true);
+            } else {
+                callTreeTable.setModel(new CallTreeNodeModel(callTreeNodes));
+                callTreeTable.setRootVisible(false);
+                TableColumnModel columnModel = callTreeTable.getColumnModel();
+                columnModel.getColumn(1).setCellRenderer(new DurationColumnRenderer());
+                callTreeTable.setTreeCellRenderer(new MethodColumnRenderer());
+                callTreeTable.getColumnModel().getColumn(0).setPreferredWidth(450);
+                callTreeTable.getColumnModel().getColumn(1).setWidth(50);
+            }
+        } else {
+            setEnabled(false);
+            updateButton(e);
+        }
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return AgentFacade.INSTANCE.isRunning();
-	}
+    @Override
+    public boolean isEnabled() {
+        return AgentFacade.INSTANCE.isRunning();
+    }
 
 }

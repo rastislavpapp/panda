@@ -9,6 +9,6 @@ import javassist.NotFoundException;
  */
 public interface ClassTransformer {
 
-	void doTransform(CtClass ctClass) throws NotFoundException, CannotCompileException;
+    void doTransform(CtClass ctClass) throws NotFoundException, CannotCompileException;
 
 }

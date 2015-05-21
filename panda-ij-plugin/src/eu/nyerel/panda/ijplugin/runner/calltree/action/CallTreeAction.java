@@ -11,19 +11,19 @@ import javax.swing.*;
  */
 public abstract class CallTreeAction extends AnActionButton {
 
-	public CallTreeAction(String text, Icon icon) {
-		super(text, icon);
-	}
+    public CallTreeAction(String text, Icon icon) {
+        super(text, icon);
+    }
 
-	@Override
-	public void actionPerformed(AnActionEvent e) {
-		performAction(e, getCallTreeTable());
-	}
+    @Override
+    public void actionPerformed(AnActionEvent e) {
+        performAction(e, getCallTreeTable());
+    }
 
-	protected abstract void performAction(AnActionEvent e, TreeTable callTreeTable);
+    protected abstract void performAction(AnActionEvent e, TreeTable callTreeTable);
 
-	protected TreeTable getCallTreeTable() {
-		return (TreeTable) getContextComponent();
-	}
+    protected TreeTable getCallTreeTable() {
+        return (TreeTable) getContextComponent();
+    }
 
 }

@@ -11,10 +11,10 @@ import java.util.List;
  */
 public interface MonitoringResultService extends Remote {
 
-	List<CallTreeNode> getCallTree() throws RemoteException;
+    List<CallTreeNode> getCallTree() throws RemoteException;
 
-	void shutdown() throws RemoteException;
+    void shutdown() throws RemoteException;
 
-	void clear() throws RemoteException;
+    void clear() throws RemoteException;
 
 }

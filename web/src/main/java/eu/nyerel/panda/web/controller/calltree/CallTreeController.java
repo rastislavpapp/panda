@@ -15,11 +15,11 @@ import java.util.List;
 @RequestMapping("/")
 public class CallTreeController {
 
-	@RequestMapping
-	public String renderCallTree(Model model) {
-		List<CallTreeNode> callTree = MonitoringResultServiceImpl.getInstance().getCallTree();
-		model.addAttribute("callTree", callTree);
-		return "call-tree/view";
-	}
+    @RequestMapping
+    public String renderCallTree(Model model) {
+        List<CallTreeNode> callTree = MonitoringResultServiceImpl.getInstance().getCallTree();
+        model.addAttribute("callTree", callTree);
+        return "call-tree/view";
+    }
 
 }

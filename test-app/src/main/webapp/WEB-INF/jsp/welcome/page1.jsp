@@ -1,5 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@include file="../init.jspf"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@include file="../init.jspf" %>
 
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="loginError" type="java.lang.Boolean"--%>
@@ -14,16 +14,17 @@
 </head>
 <body>
 
-    <c:set var="page" value="page1"/>
-    <%@include file="../navigation.jspf"%>
+<c:set var="page" value="page1"/>
+<%@include file="../navigation.jspf" %>
 
-    <div class="container">
-        <h1 class="page-header">Page 1</h1>
-        <p class="lead">
+<div class="container">
+    <h1 class="page-header">Page 1</h1>
 
-        </p>
+    <p class="lead">
 
-    </div>
+    </p>
+
+</div>
 
 </body>
 </html>

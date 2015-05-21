@@ -29,9 +29,9 @@ public class Validate {
         isTrue(condition, "Validated condition is false");
     }
 
-	public static void isFalse(boolean condition) {
-		isTrue(!condition, "Validated condition is true");
-	}
+    public static void isFalse(boolean condition) {
+        isTrue(!condition, "Validated condition is true");
+    }
 
     public static void isTrue(boolean condition, String message) {
         if (!condition) {

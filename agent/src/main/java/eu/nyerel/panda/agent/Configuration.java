@@ -11,22 +11,22 @@ import java.util.List;
  */
 public class Configuration {
 
-	public static List<String> getMonitoredClasses() {
-		List<String> monitoredClasses = new ArrayList<String>();
-		String monitoredClassesStr = System.getProperty("panda.monitored.classes");
-		if (monitoredClassesStr != null && !monitoredClassesStr.isEmpty()) {
-			Collections.addAll(monitoredClasses, monitoredClassesStr.split(","));
-		}
-		return monitoredClasses;
-	}
+    public static List<String> getMonitoredClasses() {
+        List<String> monitoredClasses = new ArrayList<String>();
+        String monitoredClassesStr = System.getProperty("panda.monitored.classes");
+        if (monitoredClassesStr != null && !monitoredClassesStr.isEmpty()) {
+            Collections.addAll(monitoredClasses, monitoredClassesStr.split(","));
+        }
+        return monitoredClasses;
+    }
 
-	public static Log.Level getLogLevel() {
-		String logLevel = System.getProperty("panda.log.level");
-		if (logLevel != null && !logLevel.isEmpty()) {
-			return Log.Level.valueOf(logLevel);
-		} else {
-			return null;
-		}
-	}
+    public static Log.Level getLogLevel() {
+        String logLevel = System.getProperty("panda.log.level");
+        if (logLevel != null && !logLevel.isEmpty()) {
+            return Log.Level.valueOf(logLevel);
+        } else {
+            return null;
+        }
+    }
 
 }

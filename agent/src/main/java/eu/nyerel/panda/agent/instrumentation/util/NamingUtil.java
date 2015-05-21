@@ -5,12 +5,12 @@ package eu.nyerel.panda.agent.instrumentation.util;
  */
 public class NamingUtil {
 
-	public static String pandalize(String name) {
-		return pandalize(name, null);
-	}
+    public static String pandalize(String name) {
+        return pandalize(name, null);
+    }
 
-	public static String pandalize(String name, String suffix) {
-		return "__" + name + "__$PANDA" + (suffix != null ? "_" + suffix : "");
-	}
+    public static String pandalize(String name, String suffix) {
+        return "__" + name + "__$PANDA" + (suffix != null ? "_" + suffix : "");
+    }
 
 }

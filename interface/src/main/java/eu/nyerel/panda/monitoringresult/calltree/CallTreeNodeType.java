@@ -5,7 +5,7 @@ package eu.nyerel.panda.monitoringresult.calltree;
  */
 public enum CallTreeNodeType {
 
-	METHOD,
-	SQL
+    METHOD,
+    SQL
 
 }

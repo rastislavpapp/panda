@@ -1,5 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@include file="../init.jspf"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@include file="../init.jspf" %>
 
 <%--@elvariable id="callTree" type="java.util.List<eu.nyerel.panda.monitoringresult.calltree.CallTreeNode>"--%>
 
@@ -18,16 +18,17 @@
 </head>
 <body>
 
-    <c:set var="page" value="call-tree"/>
-    <%@include file="../navigation.jspf"%>
+<c:set var="page" value="call-tree"/>
+<%@include file="../navigation.jspf" %>
 
-    <div class="container">
-        <h1 class="page-header">Call Tree</h1>
-        <p class="lead">
-            <panda:call-tree id="callTree" nodes="${callTree}"/>
-        </p>
+<div class="container">
+    <h1 class="page-header">Call Tree</h1>
 
-    </div>
+    <p class="lead">
+        <panda:call-tree id="callTree" nodes="${callTree}"/>
+    </p>
+
+</div>
 
 </body>
 </html>

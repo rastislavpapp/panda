@@ -14,7 +14,7 @@ public class MonitoredEventRecorder {
         return current;
     }
 
-	public void startEvent(MonitoredEvent event) {
+    public void startEvent(MonitoredEvent event) {
         Validate.notNull(event);
         if (root == null) {
             root = event;
@@ -39,7 +39,7 @@ public class MonitoredEventRecorder {
     }
 
     private void recordFinishedEventTree() {
-		MonitoringEventListenerRegistry.fireEventCallTreeFinished(root);
+        MonitoringEventListenerRegistry.fireEventCallTreeFinished(root);
     }
 
 }

@@ -13,32 +13,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class WelcomeController {
 
-	@Autowired
-	private TestService testService;
+    @Autowired
+    private TestService testService;
 
-	@RequestMapping
-	public String page1(Model model) {
-		testService.waitFor(1000);
-		testService.callDatabase();
-		return "welcome/page1";
-	}
+    @RequestMapping
+    public String page1(Model model) {
+        testService.waitFor(1000);
+        testService.callDatabase();
+        return "welcome/page1";
+    }
 
-	@RequestMapping("/page2")
-	public String page2(Model model) {
-		testService.makeInternalCalls(10);
-		return "welcome/page2";
-	}
+    @RequestMapping("/page2")
+    public String page2(Model model) {
+        testService.makeInternalCalls(10);
+        return "welcome/page2";
+    }
 
-	@RequestMapping("/page3")
-	public String page3(Model model) {
-		testService.fastCall();
-		return "welcome/page3";
-	}
+    @RequestMapping("/page3")
+    public String page3(Model model) {
+        testService.fastCall();
+        return "welcome/page3";
+    }
 
-	@RequestMapping("/page4")
-	public String page4() {
-		testService.testInheritance();
-		return "welcome/page4";
-	}
+    @RequestMapping("/page4")
+    public String page4() {
+        testService.testInheritance();
+        return "welcome/page4";
+    }
 
 }

@@ -14,69 +14,71 @@ import java.util.Set;
  */
 public abstract class AbstractClassFileTransformer implements ClassFileTransformer {
 
-	private static final ClassPool CLASS_POOL = ClassPool.getDefault();
-	private static final Set<ClassLoader> REGISTERED_CLASS_LOADERS = new HashSet<ClassLoader>();
+    private static final ClassPool CLASS_POOL = ClassPool.getDefault();
+    private static final Set<ClassLoader> REGISTERED_CLASS_LOADERS = new HashSet<ClassLoader>();
 
-	protected abstract boolean shouldTransform(String className);
-	protected abstract void doTransform(CtClass ctClass) throws NotFoundException, CannotCompileException;
-	protected abstract String getTransformedFlag();
+    protected abstract boolean shouldTransform(String className);
 
-	@Override
-	public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-		className = canonizeClassName(className);
-		if (shouldTransform(className)) {
-			registerClassLoader(loader);
-			try {
-				CtClass ctClass = getCtClass(className, classfileBuffer);
-				if (!alreadyTransformed(ctClass) && !ctClass.isInterface()) {
-					ctClass.defrost();
-					doTransform(ctClass);
-					markAsTransformed(ctClass);
-					classfileBuffer = ctClass.toBytecode();
-				}
-			} catch (Exception e) {
-				Log.error("Error while transforming class {0}", e, className);
-			}
-		}
-		return classfileBuffer;
-	}
+    protected abstract void doTransform(CtClass ctClass) throws NotFoundException, CannotCompileException;
 
-	private CtClass getCtClass(String className, byte[] classfileBuffer) {
-		try {
-			return CLASS_POOL.get(className);
-		} catch (NotFoundException ex) {
-			CLASS_POOL.appendClassPath(new ByteArrayClassPath(className, classfileBuffer));
-			try {
-				return CLASS_POOL.getCtClass(className);
-			} catch (NotFoundException innerEx) {
-				throw new IllegalStateException("After adding " + className + " to the javassist classPool, " +
-						"it is still not accessible. Should never happen.", innerEx);
-			}
-		}
-	}
+    protected abstract String getTransformedFlag();
 
-	private String canonizeClassName(String className) {
-		return className.replace("/", ".");
-	}
+    @Override
+    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+        className = canonizeClassName(className);
+        if (shouldTransform(className)) {
+            registerClassLoader(loader);
+            try {
+                CtClass ctClass = getCtClass(className, classfileBuffer);
+                if (!alreadyTransformed(ctClass) && !ctClass.isInterface()) {
+                    ctClass.defrost();
+                    doTransform(ctClass);
+                    markAsTransformed(ctClass);
+                    classfileBuffer = ctClass.toBytecode();
+                }
+            } catch (Exception e) {
+                Log.error("Error while transforming class {0}", e, className);
+            }
+        }
+        return classfileBuffer;
+    }
 
-	private void registerClassLoader(ClassLoader loader) {
-		if (!REGISTERED_CLASS_LOADERS.contains(loader)) {
-			CLASS_POOL.insertClassPath(new LoaderClassPath(loader));
-			REGISTERED_CLASS_LOADERS.add(loader);
-		}
-	}
+    private CtClass getCtClass(String className, byte[] classfileBuffer) {
+        try {
+            return CLASS_POOL.get(className);
+        } catch (NotFoundException ex) {
+            CLASS_POOL.appendClassPath(new ByteArrayClassPath(className, classfileBuffer));
+            try {
+                return CLASS_POOL.getCtClass(className);
+            } catch (NotFoundException innerEx) {
+                throw new IllegalStateException("After adding " + className + " to the javassist classPool, " +
+                        "it is still not accessible. Should never happen.", innerEx);
+            }
+        }
+    }
 
-	private void markAsTransformed(CtClass ctClass) throws CannotCompileException {
-		ctClass.addField(new CtField(CtClass.intType, getTransformedFlag(), ctClass));
-	}
+    private String canonizeClassName(String className) {
+        return className.replace("/", ".");
+    }
 
-	private boolean alreadyTransformed(CtClass ctClass) {
-		try {
-			ctClass.getField(getTransformedFlag());
-			return true;
-		} catch (NotFoundException e) {
-			return false;
-		}
-	}
+    private void registerClassLoader(ClassLoader loader) {
+        if (!REGISTERED_CLASS_LOADERS.contains(loader)) {
+            CLASS_POOL.insertClassPath(new LoaderClassPath(loader));
+            REGISTERED_CLASS_LOADERS.add(loader);
+        }
+    }
+
+    private void markAsTransformed(CtClass ctClass) throws CannotCompileException {
+        ctClass.addField(new CtField(CtClass.intType, getTransformedFlag(), ctClass));
+    }
+
+    private boolean alreadyTransformed(CtClass ctClass) {
+        try {
+            ctClass.getField(getTransformedFlag());
+            return true;
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
 
 }

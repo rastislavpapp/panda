@@ -31,47 +31,47 @@ public class Log {
     private static Level LEVEL = Level.INFO;
     private static PrintStream OUTPUT = System.out;
 
-    public static void fatal(String message, Object ... params) {
+    public static void fatal(String message, Object... params) {
         fatal(message, null, params);
     }
 
-    public static void fatal(String message, Throwable throwable, Object ... params) {
+    public static void fatal(String message, Throwable throwable, Object... params) {
         log(Level.FATAL, message, throwable, params);
     }
 
-    public static void error(String message, Object ... params) {
+    public static void error(String message, Object... params) {
         error(message, null, params);
     }
 
-    public static void error(String message, Throwable throwable, Object ... params) {
+    public static void error(String message, Throwable throwable, Object... params) {
         log(Level.ERROR, message, throwable, params);
     }
 
-    public static void warn(String message, Object ... params) {
+    public static void warn(String message, Object... params) {
         warn(message, null, params);
     }
 
-    public static void warn(String message, Throwable throwable, Object ... params) {
+    public static void warn(String message, Throwable throwable, Object... params) {
         log(Level.WARN, message, throwable, params);
     }
 
-    public static void info(String message, Object ... params) {
+    public static void info(String message, Object... params) {
         info(message, null, params);
     }
 
-    public static void info(String message, Throwable throwable, Object ... params) {
+    public static void info(String message, Throwable throwable, Object... params) {
         log(Level.INFO, message, throwable, params);
     }
 
-    public static void debug(String message, Object ... params) {
+    public static void debug(String message, Object... params) {
         debug(message, null, params);
     }
 
-    public static void debug(String message, Throwable throwable, Object ... params) {
+    public static void debug(String message, Throwable throwable, Object... params) {
         log(Level.DEBUG, message, throwable, params);
     }
 
-    private static void log(Level level, String message, Throwable throwable, Object ... params) {
+    private static void log(Level level, String message, Throwable throwable, Object... params) {
         if (LEVEL.includes(level)) {
             String formattedMessage = MessageFormat.format(message, params);
             OUTPUT.println(MessageFormat.format("{0,date,yyyy-MM-dd HH:mm:ss:SSS} [{1}] Panda Profiler Agent: {2}",

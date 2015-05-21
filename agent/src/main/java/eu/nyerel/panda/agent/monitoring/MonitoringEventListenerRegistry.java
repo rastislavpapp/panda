@@ -8,24 +8,24 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class MonitoringEventListenerRegistry {
 
-	private static final List<MonitoringEventListener> LISTENERS =
-			new CopyOnWriteArrayList<MonitoringEventListener>();
+    private static final List<MonitoringEventListener> LISTENERS =
+            new CopyOnWriteArrayList<MonitoringEventListener>();
 
-	private MonitoringEventListenerRegistry() {
-	}
+    private MonitoringEventListenerRegistry() {
+    }
 
-	public static void register(MonitoringEventListener listener) {
-		LISTENERS.add(listener);
-	}
+    public static void register(MonitoringEventListener listener) {
+        LISTENERS.add(listener);
+    }
 
-	public static void unregister(MonitoringEventListener listener) {
-		LISTENERS.remove(listener);
-	}
+    public static void unregister(MonitoringEventListener listener) {
+        LISTENERS.remove(listener);
+    }
 
-	public static void fireEventCallTreeFinished(MonitoredEvent node) {
-		for (MonitoringEventListener listener : LISTENERS) {
-			listener.onCallTreeFinished(node);
-		}
-	}
+    public static void fireEventCallTreeFinished(MonitoredEvent node) {
+        for (MonitoringEventListener listener : LISTENERS) {
+            listener.onCallTreeFinished(node);
+        }
+    }
 
 }

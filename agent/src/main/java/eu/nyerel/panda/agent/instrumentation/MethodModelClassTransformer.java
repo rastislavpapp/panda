@@ -7,29 +7,30 @@ import javassist.*;
  */
 public abstract class MethodModelClassTransformer implements ClassTransformer {
 
-	protected abstract Class getMethodModel();
-	protected abstract AbstractMethodTransformer getMethodTransformer();
+    protected abstract Class getMethodModel();
 
-	@Override
-	public void doTransform(CtClass ctClass) throws NotFoundException, CannotCompileException {
-		ClassPool cp = ClassPool.getDefault();
-		CtClass model = cp.get(getMethodModel().getName());
-		CtMethod[] modelMethods = model.getDeclaredMethods();
-		AbstractMethodTransformer methodTransformer = getMethodTransformer();
-		for (CtMethod declaredMethod : modelMethods) {
-			CtMethod method = findMethod(ctClass, declaredMethod);
-			if (method != null) {
-				methodTransformer.transform(ctClass, method);
-			}
-		}
-	}
+    protected abstract AbstractMethodTransformer getMethodTransformer();
 
-	private static CtMethod findMethod(CtClass classToTransform, CtMethod declaredMethod) {
-		try {
-			return classToTransform.getDeclaredMethod(declaredMethod.getName(), declaredMethod.getParameterTypes());
-		} catch (NotFoundException e) {
-			return null;
-		}
-	}
+    @Override
+    public void doTransform(CtClass ctClass) throws NotFoundException, CannotCompileException {
+        ClassPool cp = ClassPool.getDefault();
+        CtClass model = cp.get(getMethodModel().getName());
+        CtMethod[] modelMethods = model.getDeclaredMethods();
+        AbstractMethodTransformer methodTransformer = getMethodTransformer();
+        for (CtMethod declaredMethod : modelMethods) {
+            CtMethod method = findMethod(ctClass, declaredMethod);
+            if (method != null) {
+                methodTransformer.transform(ctClass, method);
+            }
+        }
+    }
+
+    private static CtMethod findMethod(CtClass classToTransform, CtMethod declaredMethod) {
+        try {
+            return classToTransform.getDeclaredMethod(declaredMethod.getName(), declaredMethod.getParameterTypes());
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
 
 }

@@ -24,69 +24,69 @@ import javax.swing.*;
  */
 public class PandaProgramRunner extends DefaultJavaProgramRunner {
 
-	public static final String RUNNER_ID = "Panda Runner";
+    public static final String RUNNER_ID = "Panda Runner";
 
-	public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
-		try {
-			return executorId.equals(PandaExecutor.EXECUTOR_ID)
-					&& !(profile instanceof RunConfigurationWithSuppressedDefaultRunAction)
-					&& profile instanceof RunConfigurationBase;
-		} catch (Exception ex) {
-			return false;
-		}
-	}
+    public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
+        try {
+            return executorId.equals(PandaExecutor.EXECUTOR_ID)
+                    && !(profile instanceof RunConfigurationWithSuppressedDefaultRunAction)
+                    && profile instanceof RunConfigurationBase;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 
-	@Override
-	public void patch(JavaParameters javaParameters, RunnerSettings settings, RunProfile runProfile, boolean beforeExecution) throws ExecutionException {
-		super.patch(javaParameters, settings, runProfile, beforeExecution);
-		if (beforeExecution) {
-			ParametersList vmParametersList = javaParameters.getVMParametersList();
-			vmParametersList.add("-javaagent:" + getAgentFilePath());
-			Project project = ((RunConfigurationBase) runProfile).getProject();
-			vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(project));
-		}
-	}
+    @Override
+    public void patch(JavaParameters javaParameters, RunnerSettings settings, RunProfile runProfile, boolean beforeExecution) throws ExecutionException {
+        super.patch(javaParameters, settings, runProfile, beforeExecution);
+        if (beforeExecution) {
+            ParametersList vmParametersList = javaParameters.getVMParametersList();
+            vmParametersList.add("-javaagent:" + getAgentFilePath());
+            Project project = ((RunConfigurationBase) runProfile).getProject();
+            vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(project));
+        }
+    }
 
-	private String getAgentFilePath() {
-		return JarUtils.geUnpackedResourcePath("/panda-agent.jar");
-	}
+    private String getAgentFilePath() {
+        return JarUtils.geUnpackedResourcePath("/panda-agent.jar");
+    }
 
-	@NotNull
-	private <P extends RunConfigurationBase> String getMonitoredClassesString(Project project) {
-		return PandaSettings.INSTANCE.getMonitoredClassesAsString(project);
-	}
+    @NotNull
+    private <P extends RunConfigurationBase> String getMonitoredClassesString(Project project) {
+        return PandaSettings.INSTANCE.getMonitoredClassesAsString(project);
+    }
 
-	@Override
-	protected RunContentDescriptor doExecute(@NotNull RunProfileState state, @NotNull final ExecutionEnvironment env)
-			throws ExecutionException {
-		RunContentDescriptor descriptor = super.doExecute(state, env);
-		if (descriptor != null) {
-			ProcessHandler processHandler = descriptor.getProcessHandler();
-			if (processHandler != null) {
-				processHandler.addProcessListener(new CapturingProcessAdapter() {
-					@Override
-					public void processWillTerminate(ProcessEvent event, boolean willBeDestroyed) {
-						if (AgentFacade.INSTANCE.isRunning()) {
-							AgentFacade.INSTANCE.shutdown();
-						}
+    @Override
+    protected RunContentDescriptor doExecute(@NotNull RunProfileState state, @NotNull final ExecutionEnvironment env)
+            throws ExecutionException {
+        RunContentDescriptor descriptor = super.doExecute(state, env);
+        if (descriptor != null) {
+            ProcessHandler processHandler = descriptor.getProcessHandler();
+            if (processHandler != null) {
+                processHandler.addProcessListener(new CapturingProcessAdapter() {
+                    @Override
+                    public void processWillTerminate(ProcessEvent event, boolean willBeDestroyed) {
+                        if (AgentFacade.INSTANCE.isRunning()) {
+                            AgentFacade.INSTANCE.shutdown();
+                        }
                         unregisterPandaToolWindow(env.getProject());
                     }
 
                     @Override
-					public void startNotified(ProcessEvent event) {
-						registerPandaToolWindow(env.getProject());
-					}
+                    public void startNotified(ProcessEvent event) {
+                        registerPandaToolWindow(env.getProject());
+                    }
 
                 });
-			}
-		}
-		return descriptor;
-	}
+            }
+        }
+        return descriptor;
+    }
 
-	@NotNull
-	public String getRunnerId() {
-		return RUNNER_ID;
-	}
+    @NotNull
+    public String getRunnerId() {
+        return RUNNER_ID;
+    }
 
 
     private void unregisterPandaToolWindow(final Project project) {

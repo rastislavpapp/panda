@@ -11,42 +11,42 @@ import javassist.bytecode.AccessFlag;
  */
 public abstract class AbstractMethodTransformer {
 
-	public void transform(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException, NotFoundException {
-		ctClass.addMethod(getPrivateCopy(ctClass, ctMethod));
-		String transformedBody = createTransformedBody(ctMethod);
-		Log.debug("Transforming {0}", ctMethod.getLongName());
-		ctMethod.setBody(MethodBuildingUtil.wrapBrackets(transformedBody));
-	}
+    public void transform(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException, NotFoundException {
+        ctClass.addMethod(getPrivateCopy(ctClass, ctMethod));
+        String transformedBody = createTransformedBody(ctMethod);
+        Log.debug("Transforming {0}", ctMethod.getLongName());
+        ctMethod.setBody(MethodBuildingUtil.wrapBrackets(transformedBody));
+    }
 
-	protected abstract String createTransformedBody(CtMethod ctMethod) throws NotFoundException;
+    protected abstract String createTransformedBody(CtMethod ctMethod) throws NotFoundException;
 
-	protected boolean returnsVoid(CtMethod ctMethod) throws NotFoundException {
-		return ctMethod.getReturnType().equals(CtClass.voidType);
-	}
+    protected boolean returnsVoid(CtMethod ctMethod) throws NotFoundException {
+        return ctMethod.getReturnType().equals(CtClass.voidType);
+    }
 
-	protected String getReturningInternalMethodCall(CtMethod ctMethod) throws NotFoundException {
-		String internalMethodCall = getInternalMethodCall(ctMethod);
-		if (!returnsVoid(ctMethod)) {
-			internalMethodCall = "return " + internalMethodCall;
-		}
-		return internalMethodCall;
-	}
+    protected String getReturningInternalMethodCall(CtMethod ctMethod) throws NotFoundException {
+        String internalMethodCall = getInternalMethodCall(ctMethod);
+        if (!returnsVoid(ctMethod)) {
+            internalMethodCall = "return " + internalMethodCall;
+        }
+        return internalMethodCall;
+    }
 
-	protected String getInternalMethodCall(CtMethod ctMethod) {
-		return getInternalMethodName(ctMethod) + "($$);";
-	}
+    protected String getInternalMethodCall(CtMethod ctMethod) {
+        return getInternalMethodName(ctMethod) + "($$);";
+    }
 
-	protected String getInternalMethodName(CtMethod ctMethod) {
-		return NamingUtil.pandalize(ctMethod.getName(), uniqueTransformationName());
-	}
+    protected String getInternalMethodName(CtMethod ctMethod) {
+        return NamingUtil.pandalize(ctMethod.getName(), uniqueTransformationName());
+    }
 
-	protected abstract String uniqueTransformationName();
+    protected abstract String uniqueTransformationName();
 
-	private CtMethod getPrivateCopy(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException {
-		CtMethod copy = CtNewMethod.copy(ctMethod, getInternalMethodName(ctMethod), ctClass, null);
-		int privateModifiers = AccessFlag.setPrivate(copy.getModifiers());
-		copy.setModifiers(privateModifiers);
-		return copy;
-	}
+    private CtMethod getPrivateCopy(CtClass ctClass, CtMethod ctMethod) throws CannotCompileException {
+        CtMethod copy = CtNewMethod.copy(ctMethod, getInternalMethodName(ctMethod), ctClass, null);
+        int privateModifiers = AccessFlag.setPrivate(copy.getModifiers());
+        copy.setModifiers(privateModifiers);
+        return copy;
+    }
 
 }

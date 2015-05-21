@@ -5,8 +5,8 @@ package eu.nyerel.panda.testapp.service;
  */
 public class InheritanceTestGrandpa {
 
-	public void doNothing(String someInput) {
-		System.out.println("Doing nothing in " + InheritanceTestGrandpa.class.getSimpleName());
-	}
+    public void doNothing(String someInput) {
+        System.out.println("Doing nothing in " + InheritanceTestGrandpa.class.getSimpleName());
+    }
 
 }

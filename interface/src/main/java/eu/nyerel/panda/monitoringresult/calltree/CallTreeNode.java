@@ -8,59 +8,59 @@ import java.util.List;
  */
 public class CallTreeNode implements Serializable {
 
-	private long id;
-	private CallTreeNodeType type;
-	private CallTreeNodeDuration duration;
-	private String description;
-	private CallTreeNode parent;
-	private List<CallTreeNode> children;
+    private long id;
+    private CallTreeNodeType type;
+    private CallTreeNodeDuration duration;
+    private String description;
+    private CallTreeNode parent;
+    private List<CallTreeNode> children;
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public CallTreeNodeType getType() {
-		return type;
-	}
+    public CallTreeNodeType getType() {
+        return type;
+    }
 
-	public void setType(CallTreeNodeType type) {
-		this.type = type;
-	}
+    public void setType(CallTreeNodeType type) {
+        this.type = type;
+    }
 
-	public CallTreeNodeDuration getDuration() {
-		return duration;
-	}
+    public CallTreeNodeDuration getDuration() {
+        return duration;
+    }
 
-	public void setDuration(CallTreeNodeDuration duration) {
-		this.duration = duration;
-	}
+    public void setDuration(CallTreeNodeDuration duration) {
+        this.duration = duration;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public CallTreeNode getParent() {
-		return parent;
-	}
+    public CallTreeNode getParent() {
+        return parent;
+    }
 
-	public void setParent(CallTreeNode parent) {
-		this.parent = parent;
-	}
+    public void setParent(CallTreeNode parent) {
+        this.parent = parent;
+    }
 
-	public List<CallTreeNode> getChildren() {
-		return children;
-	}
+    public List<CallTreeNode> getChildren() {
+        return children;
+    }
 
-	public void setChildren(List<CallTreeNode> children) {
-		this.children = children;
-	}
+    public void setChildren(List<CallTreeNode> children) {
+        this.children = children;
+    }
 
 }

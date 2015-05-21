@@ -5,13 +5,13 @@ package eu.nyerel.panda.agent.monitoring;
  */
 public enum MonitoredEventRecorderFactory implements MonitoringEventListener {
 
-	INSTANCE;
+    INSTANCE;
 
-	private final ThreadLocal<MonitoredEventRecorder> recorderTL = new ThreadLocal<MonitoredEventRecorder>();
+    private final ThreadLocal<MonitoredEventRecorder> recorderTL = new ThreadLocal<MonitoredEventRecorder>();
 
     public MonitoredEventRecorder getRecorder() {
-		ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL = recorderTL;
-		MonitoredEventRecorder cs = callTreeRecorderTL.get();
+        ThreadLocal<MonitoredEventRecorder> callTreeRecorderTL = recorderTL;
+        MonitoredEventRecorder cs = callTreeRecorderTL.get();
         if (cs == null) {
             cs = new MonitoredEventRecorder();
             callTreeRecorderTL.set(cs);
@@ -21,9 +21,9 @@ public enum MonitoredEventRecorderFactory implements MonitoringEventListener {
         }
     }
 
-	@Override
-	public void onCallTreeFinished(MonitoredEvent node) {
-		recorderTL.remove();
-	}
+    @Override
+    public void onCallTreeFinished(MonitoredEvent node) {
+        recorderTL.remove();
+    }
 
 }

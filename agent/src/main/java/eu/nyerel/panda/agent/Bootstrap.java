@@ -15,47 +15,47 @@ import java.util.List;
  */
 public class Bootstrap {
 
-	private static final String[] FORBIDDEN_PACKAGES = new String[] {
-			"java",
-			"javax",
-			"eu.nyerel.panda.agent"
-	};
+    private static final String[] FORBIDDEN_PACKAGES = new String[]{
+            "java",
+            "javax",
+            "eu.nyerel.panda.agent"
+    };
 
-	private final Instrumentation inst;
+    private final Instrumentation inst;
 
-	public Bootstrap(Instrumentation inst) {
-		this.inst = inst;
-	}
+    public Bootstrap(Instrumentation inst) {
+        this.inst = inst;
+    }
 
-	public void init() {
-		initLogLevel();
-		Log.info("Initializing Panda monitoring...");
-		List<String> monitoredClasses = Configuration.getMonitoredClasses();
-		validateMonitoredClasses(monitoredClasses);
-		Log.info("Monitored classes = {0}", monitoredClasses);
-		inst.addTransformer(new MonitorClassFileTransformer());
-		MonitoringEventListenerRegistry.register(MonitoringResultServiceImpl.INSTANCE);
-		MonitoringEventListenerRegistry.register(MonitoredEventRecorderFactory.INSTANCE);
-		MonitoringEventListenerRegistry.register(DataStorage.INSTANCE);
+    public void init() {
+        initLogLevel();
+        Log.info("Initializing Panda monitoring...");
+        List<String> monitoredClasses = Configuration.getMonitoredClasses();
+        validateMonitoredClasses(monitoredClasses);
+        Log.info("Monitored classes = {0}", monitoredClasses);
+        inst.addTransformer(new MonitorClassFileTransformer());
+        MonitoringEventListenerRegistry.register(MonitoringResultServiceImpl.INSTANCE);
+        MonitoringEventListenerRegistry.register(MonitoredEventRecorderFactory.INSTANCE);
+        MonitoringEventListenerRegistry.register(DataStorage.INSTANCE);
 
-		MonitoringResultServiceImpl.INSTANCE.startRemote();
-	}
+        MonitoringResultServiceImpl.INSTANCE.startRemote();
+    }
 
-	private void initLogLevel() {
-		Log.Level level = Configuration.getLogLevel();
-		if (level != null) {
-			Log.setLevel(level);
-		}
-	}
+    private void initLogLevel() {
+        Log.Level level = Configuration.getLogLevel();
+        if (level != null) {
+            Log.setLevel(level);
+        }
+    }
 
-	private void validateMonitoredClasses(List<String> monitoredClasses) {
-		for (String monitoredClass : monitoredClasses) {
-			for (String forbiddenPackage : FORBIDDEN_PACKAGES) {
-				if (monitoredClass.startsWith(forbiddenPackage) || forbiddenPackage.startsWith(monitoredClass)) {
-					throw new IllegalArgumentException("Illegal monitored classes configuration - '" + monitoredClass + "'");
-				}
-			}
-		}
-	}
+    private void validateMonitoredClasses(List<String> monitoredClasses) {
+        for (String monitoredClass : monitoredClasses) {
+            for (String forbiddenPackage : FORBIDDEN_PACKAGES) {
+                if (monitoredClass.startsWith(forbiddenPackage) || forbiddenPackage.startsWith(monitoredClass)) {
+                    throw new IllegalArgumentException("Illegal monitored classes configuration - '" + monitoredClass + "'");
+                }
+            }
+        }
+    }
 
 }

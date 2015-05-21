@@ -2,15 +2,16 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<%@attribute name="nodes" type="java.util.List<eu.nyerel.panda.monitoringresult.calltree.CallTreeNode>" required="true" %>
+<%@attribute name="nodes" type="java.util.List<eu.nyerel.panda.monitoringresult.calltree.CallTreeNode>"
+             required="true" %>
 <%@attribute name="id" type="java.lang.String" required="true" %>
-<%@attribute name="cssClass" type="java.lang.String" required="false"%>
+<%@attribute name="cssClass" type="java.lang.String" required="false" %>
 
 <script type="text/javascript">
 
-    $(function() {
+    $(function () {
         $("#${id}").jstree({
-            plugins: [ "state", "wholerow" ],
+            plugins: ["state", "wholerow"],
             core: {
                 themes: {
                     icons: false

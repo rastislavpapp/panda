@@ -3,14 +3,14 @@
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
     <appender name="console" class="org.apache.log4j.ConsoleAppender">
-        <param name="Threshold" value="DEBUG" />
+        <param name="Threshold" value="DEBUG"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %p %c{1}:%L %m %n" />
+            <param name="ConversionPattern" value="%d %p %c{1}:%L %m %n"/>
         </layout>
     </appender>
 
     <logger name="eu.nyerel.panda">
-        <level value="DEBUG" />
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="org.springframework">
@@ -22,7 +22,7 @@
     </logger>
 
     <root>
-        <appender-ref ref="console" />
+        <appender-ref ref="console"/>
     </root>
 
 </log4j:configuration>

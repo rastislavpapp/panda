@@ -11,12 +11,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class MethodColumnRenderer extends NodeRenderer {
 
-	@Override
-	public void customizeCellRenderer(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-		DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) value;
-		CallTreeNode callNode = (CallTreeNode) treeNode.getUserObject();
-		String label = callNode.getDescription();
-		super.customizeCellRenderer(tree, label, selected, expanded, leaf, row, hasFocus);
-	}
+    @Override
+    public void customizeCellRenderer(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+        DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) value;
+        CallTreeNode callNode = (CallTreeNode) treeNode.getUserObject();
+        String label = callNode.getDescription();
+        super.customizeCellRenderer(tree, label, selected, expanded, leaf, row, hasFocus);
+    }
 
 }

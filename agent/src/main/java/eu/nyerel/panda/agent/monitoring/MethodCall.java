@@ -5,24 +5,24 @@ package eu.nyerel.panda.agent.monitoring;
  */
 public class MethodCall extends MonitoredEvent {
 
-	private final long start = System.currentTimeMillis();
+    private final long start = System.currentTimeMillis();
 
-	public MethodCall(MonitoredEvent parent, String description) {
-		super(parent, description);
-	}
+    public MethodCall(MonitoredEvent parent, String description) {
+        super(parent, description);
+    }
 
-	public void finish() {
-		super.finish();
-		duration = System.currentTimeMillis() - start;
-	}
+    public void finish() {
+        super.finish();
+        duration = System.currentTimeMillis() - start;
+    }
 
-	public long getStart() {
-		return start;
-	}
+    public long getStart() {
+        return start;
+    }
 
-	@Override
-	public String toString() {
-		return getDescription() + " [" + duration + "ms]";
-	}
+    @Override
+    public String toString() {
+        return getDescription() + " [" + duration + "ms]";
+    }
 
 }

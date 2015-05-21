@@ -10,9 +10,12 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li <c:if test="${empty page}">class="active"</c:if>><a href="<c:url value="/"/>">Page 1</a></li>
-                <li <c:if test="${page == 'page2'}">class="active"</c:if>><a href="<c:url value="/page2"/>">Page 2</a></li>
-                <li <c:if test="${page == 'page3'}">class="active"</c:if>><a href="<c:url value="/page3"/>">Page 3</a></li>
-                <li <c:if test="${page == 'page4'}">class="active"</c:if>><a href="<c:url value="/page4"/>">Page 3</a></li>
+                <li <c:if test="${page == 'page2'}">class="active"</c:if>><a href="<c:url value="/page2"/>">Page 2</a>
+                </li>
+                <li <c:if test="${page == 'page3'}">class="active"</c:if>><a href="<c:url value="/page3"/>">Page 3</a>
+                </li>
+                <li <c:if test="${page == 'page4'}">class="active"</c:if>><a href="<c:url value="/page4"/>">Page 3</a>
+                </li>
             </ul>
 
         </div>
