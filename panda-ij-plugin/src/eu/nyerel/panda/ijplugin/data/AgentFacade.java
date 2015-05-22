@@ -1,4 +1,4 @@
-package eu.nyerel.panda.ijplugin.runner;
+package eu.nyerel.panda.ijplugin.data;
 
 import eu.nyerel.panda.Constants;
 import eu.nyerel.panda.monitoringresult.MonitoringResultService;

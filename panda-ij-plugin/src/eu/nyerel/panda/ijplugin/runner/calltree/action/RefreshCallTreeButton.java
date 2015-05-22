@@ -6,7 +6,8 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.treeStructure.treetable.TreeTable;
-import eu.nyerel.panda.ijplugin.runner.AgentFacade;
+import eu.nyerel.panda.ijplugin.data.AgentFacade;
+import eu.nyerel.panda.ijplugin.data.DumpFileReader;
 import eu.nyerel.panda.ijplugin.runner.calltree.CallTreeNodeModel;
 import eu.nyerel.panda.ijplugin.runner.calltree.renderer.DurationColumnRenderer;
 import eu.nyerel.panda.ijplugin.runner.calltree.renderer.MethodColumnRenderer;
@@ -33,13 +34,16 @@ public class RefreshCallTreeButton extends CallTreeAction {
                     @Override
                     public void run(@NotNull ProgressIndicator indicator) {
                         indicator.setIndeterminate(true);
+                        List<CallTreeNode> nodes;
                         if (AgentFacade.INSTANCE.isRunning()) {
-                            List<CallTreeNode> callTreeNodes = AgentFacade.INSTANCE.getCallTree();
-                            if (callTreeNodes.isEmpty()) {
-                                drawEmptyCallTree(callTreeTable);
-                            } else {
-                                drawCallTree(callTreeTable, callTreeNodes);
-                            }
+                            nodes = AgentFacade.INSTANCE.getCallTree();
+                        } else {
+                            nodes = DumpFileReader.INSTANCE.read();
+                        }
+                        if (nodes != null && !nodes.isEmpty()) {
+                            drawCallTree(callTreeTable, nodes);
+                        } else {
+                            drawEmptyCallTree(callTreeTable);
                         }
                     }
                 }

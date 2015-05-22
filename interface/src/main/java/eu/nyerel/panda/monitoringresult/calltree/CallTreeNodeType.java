@@ -6,6 +6,8 @@ package eu.nyerel.panda.monitoringresult.calltree;
 public enum CallTreeNodeType {
 
     METHOD,
-    SQL
+    SQL;
+
+    private static final long serialVersionUID = 1L;
 
 }

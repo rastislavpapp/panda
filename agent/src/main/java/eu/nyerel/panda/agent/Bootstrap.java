@@ -4,6 +4,7 @@ import eu.nyerel.panda.agent.instrumentation.monitoring.MonitorClassFileTransfor
 import eu.nyerel.panda.agent.monitoring.DataStorage;
 import eu.nyerel.panda.agent.monitoring.MonitoredEventRecorderFactory;
 import eu.nyerel.panda.agent.monitoring.MonitoringEventListenerRegistry;
+import eu.nyerel.panda.agent.monitoringresult.MonitoringResultDumpWriter;
 import eu.nyerel.panda.agent.monitoringresult.MonitoringResultServiceImpl;
 import eu.nyerel.panda.agent.util.Log;
 
@@ -39,6 +40,17 @@ public class Bootstrap {
         MonitoringEventListenerRegistry.register(DataStorage.INSTANCE);
 
         MonitoringResultServiceImpl.INSTANCE.startRemote();
+        addCallTreeDumpShutdownHook();
+        MonitoringResultDumpWriter.INSTANCE.clear();
+    }
+
+    private void addCallTreeDumpShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MonitoringResultDumpWriter.INSTANCE.dumpCurrentResults();
+                }
+        }));
     }
 
     private void initLogLevel() {

@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class CallTreeNode implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private long id;
     private CallTreeNodeType type;
     private CallTreeNodeDuration duration;

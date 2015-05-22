@@ -14,6 +14,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowEP;
 import com.intellij.openapi.wm.ex.ToolWindowManagerEx;
+import eu.nyerel.panda.ijplugin.data.AgentFacade;
 import eu.nyerel.panda.ijplugin.runner.calltree.PandaCallTreeWindow;
 import org.jetbrains.annotations.NotNull;
 

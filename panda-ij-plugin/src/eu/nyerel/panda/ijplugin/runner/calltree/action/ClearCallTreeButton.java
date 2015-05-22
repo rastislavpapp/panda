@@ -6,7 +6,8 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.treeStructure.treetable.TreeTable;
-import eu.nyerel.panda.ijplugin.runner.AgentFacade;
+import eu.nyerel.panda.ijplugin.data.AgentFacade;
+import eu.nyerel.panda.ijplugin.data.DumpFileReader;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,6 +27,7 @@ public class ClearCallTreeButton extends CallTreeAction {
                     public void run(@NotNull ProgressIndicator indicator) {
                         indicator.setIndeterminate(true);
                         AgentFacade.INSTANCE.clear();
+                        DumpFileReader.INSTANCE.clear();
                         drawEmptyCallTree(callTreeTable);
                     }
                 }
