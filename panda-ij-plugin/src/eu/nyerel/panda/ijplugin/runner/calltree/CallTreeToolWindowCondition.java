@@ -11,7 +11,7 @@ public class CallTreeToolWindowCondition implements Condition<Project> {
 
     @Override
     public boolean value(Project project) {
-        return AgentFacade.INSTANCE.isRunning();
+        return false;
     }
 
 }

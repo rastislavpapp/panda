@@ -3,6 +3,7 @@ package eu.nyerel.panda.ijplugin.runner.calltree.action;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.ui.AnActionButton;
 import com.intellij.ui.treeStructure.treetable.TreeTable;
+import eu.nyerel.panda.ijplugin.runner.calltree.EmptyCallTreeModel;
 
 import javax.swing.*;
 
@@ -24,6 +25,16 @@ public abstract class CallTreeAction extends AnActionButton {
 
     protected TreeTable getCallTreeTable() {
         return (TreeTable) getContextComponent();
+    }
+
+    protected void drawEmptyCallTree(final TreeTable callTreeTable) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                callTreeTable.setModel(new EmptyCallTreeModel());
+                callTreeTable.setRootVisible(true);
+            }
+        });
     }
 
 }

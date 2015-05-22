@@ -64,12 +64,10 @@ public class PandaProgramRunner extends DefaultJavaProgramRunner {
             ProcessHandler processHandler = descriptor.getProcessHandler();
             if (processHandler != null) {
                 processHandler.addProcessListener(new CapturingProcessAdapter() {
+
                     @Override
                     public void processWillTerminate(ProcessEvent event, boolean willBeDestroyed) {
-                        if (AgentFacade.INSTANCE.isRunning()) {
-                            AgentFacade.INSTANCE.shutdown();
-                        }
-                        unregisterPandaToolWindow(env.getProject());
+                        AgentFacade.INSTANCE.shutdown();
                     }
 
                     @Override
@@ -86,17 +84,6 @@ public class PandaProgramRunner extends DefaultJavaProgramRunner {
     @NotNull
     public String getRunnerId() {
         return RUNNER_ID;
-    }
-
-
-    private void unregisterPandaToolWindow(final Project project) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ToolWindowManagerEx twm = ToolWindowManagerEx.getInstanceEx(project);
-                twm.unregisterToolWindow(PandaCallTreeWindow.PANDA_TOOL_WINDOW_ID);
-            }
-        });
     }
 
     private void registerPandaToolWindow(Project project) {
@@ -116,7 +103,12 @@ public class PandaProgramRunner extends DefaultJavaProgramRunner {
                 }
             });
         } else {
-            pandaToolWindow.show(null);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    pandaToolWindow.show(null);
+                }
+            });
         }
     }
 

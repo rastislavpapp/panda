@@ -32,11 +32,13 @@ public enum AgentFacade {
     }
 
     public void shutdown() {
-        try {
-            monitoringResultService.shutdown();
-            monitoringResultService = null;
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (isRunning()) {
+            try {
+                monitoringResultService.shutdown();
+                this.monitoringResultService = null;
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -63,10 +65,13 @@ public enum AgentFacade {
     }
 
     public void clear() {
-        try {
-            getMonitoringResultService().clear();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (monitoringResultService != null) {
+            try {
+                monitoringResultService.clear();
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
 }
