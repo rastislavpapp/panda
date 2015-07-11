@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>eu.nyerel.panda.ij-plugin</id>
     <name>Panda Profiler</name>
-    <version>0.2</version>
+    <version>0.3</version>
     <vendor email="rastislav.papp@gmail.com" url="http://nyerel.eu/panda">Rastislav Papp</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <ul>
+        <li>Fixed conflicts with CGLIB</li>
+        <li>Profiling working for JUnit (and probably other) tests</li>
+        <li>Profiling working with Java 1.8 (upgraded to javassist 3.20.0-GA)</li>
+        <li>Minor UI and performance fixes</li>
+      </ul>
     ]]>
     </change-notes>
 
