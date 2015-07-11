@@ -16,7 +16,7 @@ public class EmptyCallTreeModel extends ListTreeTableModel {
     };
 
     public EmptyCallTreeModel() {
-        super(new DefaultMutableTreeNode("No monitoring data collected"), COLUMNS);
+        super(new DefaultMutableTreeNode("No monitoring data to display (hit 'Refresh' button)"), COLUMNS);
     }
 
 }
