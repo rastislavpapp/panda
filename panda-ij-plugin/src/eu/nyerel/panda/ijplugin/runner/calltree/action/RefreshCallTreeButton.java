@@ -6,17 +6,7 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.ui.treeStructure.treetable.TreeTable;
-import eu.nyerel.panda.ijplugin.data.AgentFacade;
-import eu.nyerel.panda.ijplugin.data.DumpFileReader;
-import eu.nyerel.panda.ijplugin.runner.calltree.CallTreeNodeModel;
-import eu.nyerel.panda.ijplugin.runner.calltree.renderer.DurationColumnRenderer;
-import eu.nyerel.panda.ijplugin.runner.calltree.renderer.MethodColumnRenderer;
-import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import javax.swing.table.TableColumnModel;
-import java.util.List;
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -30,39 +20,14 @@ public class RefreshCallTreeButton extends CallTreeAction {
     @Override
     protected void performAction(AnActionEvent evt, final TreeTable callTreeTable) {
         ProgressManager.getInstance().run(
-                new Task.Backgroundable(evt.getProject(), "Updating call tree", false) {
+                new Task.Backgroundable(evt.getProject(), "Updating Call Tree", false) {
                     @Override
                     public void run(@NotNull ProgressIndicator indicator) {
                         indicator.setIndeterminate(true);
-                        List<CallTreeNode> nodes;
-                        if (AgentFacade.INSTANCE.isRunning()) {
-                            nodes = AgentFacade.INSTANCE.getCallTree();
-                        } else {
-                            nodes = DumpFileReader.INSTANCE.read();
-                        }
-                        if (nodes != null && !nodes.isEmpty()) {
-                            drawCallTree(callTreeTable, nodes);
-                        } else {
-                            drawEmptyCallTree(callTreeTable);
-                        }
+                        redrawCallTreeTable();
                     }
                 }
         );
-    }
-
-    private void drawCallTree(final TreeTable callTreeTable, final List<CallTreeNode> callTreeNodes) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                callTreeTable.setModel(new CallTreeNodeModel(callTreeNodes));
-                callTreeTable.setRootVisible(false);
-                TableColumnModel columnModel = callTreeTable.getColumnModel();
-                columnModel.getColumn(1).setCellRenderer(new DurationColumnRenderer());
-                callTreeTable.setTreeCellRenderer(new MethodColumnRenderer());
-                callTreeTable.getColumnModel().getColumn(0).setPreferredWidth(450);
-                callTreeTable.getColumnModel().getColumn(1).setWidth(50);
-            }
-        });
     }
 
 }

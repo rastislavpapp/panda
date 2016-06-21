@@ -21,7 +21,11 @@ public class CallTreeNodeModel extends ListTreeTableModel {
     };
 
     public CallTreeNodeModel(List<CallTreeNode> nodes) {
-        super(createRootNode(nodes), COLUMNS);
+        this(nodes, COLUMNS);
+    }
+
+    CallTreeNodeModel(List<CallTreeNode> nodes, ColumnInfo[] columns) {
+        super(createRootNode(nodes), columns);
     }
 
     private static TreeNode createRootNode(List<CallTreeNode> nodes) {
@@ -38,11 +42,6 @@ public class CallTreeNodeModel extends ListTreeTableModel {
             result.add(createTreeNode(child));
         }
         return result;
-    }
-
-    @Override
-    public Object getValueAt(Object node, int column) {
-        return super.getValueAt(node, column);
     }
 
 }

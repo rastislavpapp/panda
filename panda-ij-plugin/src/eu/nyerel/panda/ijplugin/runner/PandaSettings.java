@@ -17,6 +17,16 @@ public enum PandaSettings {
 
     private static final String PROPERTY_PANDA_MONITORED_CLASSES = "panda.monitored.classes";
 
+    private boolean aggregateCallTree = true;
+
+    public boolean isAggregateCallTree() {
+        return aggregateCallTree;
+    }
+
+    public void setAggregateCallTree(boolean aggregateCallTree) {
+        this.aggregateCallTree = aggregateCallTree;
+    }
+
     public ClassFilter[] getMonitoredClasses(Project project) {
         PropertiesComponent properties = PropertiesComponent.getInstance(project);
         String[] classesProperty = properties.getValues(PROPERTY_PANDA_MONITORED_CLASSES);

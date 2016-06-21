@@ -45,7 +45,7 @@ public enum AgentFacade {
     private void initMonitoringResultService() {
         if (registry == null) {
             try {
-                registry = LocateRegistry.getRegistry("localhost", Constants.RMI_PORT);
+                registry = LocateRegistry.getRegistry(Constants.RMI_PORT);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -53,7 +53,7 @@ public enum AgentFacade {
         try {
             monitoringResultService = (MonitoringResultService) registry.lookup(Constants.RMI_ID);
         } catch (Exception e) {
-            monitoringResultService = null;
+            throw new RuntimeException(e);
         }
     }
 

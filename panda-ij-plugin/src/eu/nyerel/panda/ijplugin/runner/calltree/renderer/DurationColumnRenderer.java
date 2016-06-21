@@ -1,5 +1,6 @@
 package eu.nyerel.panda.ijplugin.runner.calltree.renderer;
 
+import eu.nyerel.panda.monitoringresult.calltree.AggregatedCallTreeNode;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNodeDuration;
 
@@ -19,13 +20,17 @@ public class DurationColumnRenderer extends DefaultTableCellRenderer {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
             CallTreeNode callTreeNode = (CallTreeNode) node.getUserObject();
             if (callTreeNode != null) {
-                return createProgressBar(callTreeNode.getDuration());
+                return createProgressBar(callTreeNode);
             }
         }
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     }
 
-    private Component createProgressBar(CallTreeNodeDuration duration) {
+    private Component createProgressBar(CallTreeNode node) {
+        CallTreeNodeDuration duration = node.getDuration();
+        if (node instanceof AggregatedCallTreeNode) {
+            duration = duration.divide(((AggregatedCallTreeNode) node).getAggregateCount());
+        }
         JProgressBar progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
         progressBar.setString(duration.getTotal() + " ms");

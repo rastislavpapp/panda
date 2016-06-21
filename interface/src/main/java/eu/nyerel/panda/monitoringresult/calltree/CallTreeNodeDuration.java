@@ -14,6 +14,24 @@ public class CallTreeNodeDuration implements Serializable {
     private long children;
     private double percentage;
 
+    public CallTreeNodeDuration add(CallTreeNodeDuration duration) {
+        CallTreeNodeDuration sum = new CallTreeNodeDuration();
+        sum.setTotal(total + duration.total);
+        sum.setSelf(self + duration.self);
+        sum.setChildren(children + duration.children);
+        sum.setPercentage(percentage + duration.percentage);
+        return sum;
+    }
+
+    public CallTreeNodeDuration divide(int number) {
+        CallTreeNodeDuration divided = new CallTreeNodeDuration();
+        divided.setTotal(total / number);
+        divided.setSelf(self / number);
+        divided.setChildren(children / number);
+        divided.setPercentage(percentage / number);
+        return divided;
+    }
+
     public long getTotal() {
         return total;
     }

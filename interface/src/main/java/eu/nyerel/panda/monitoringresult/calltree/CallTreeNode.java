@@ -1,6 +1,7 @@
 package eu.nyerel.panda.monitoringresult.calltree;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
