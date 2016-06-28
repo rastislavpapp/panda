@@ -1,4 +1,4 @@
-package eu.nyerel.panda.ijplugin.runner.calltree.renderer;
+package eu.nyerel.panda.ijplugin.runner.calltree.model.renderer;
 
 import eu.nyerel.panda.monitoringresult.calltree.AggregatedCallTreeNode;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
@@ -16,12 +16,9 @@ public class DurationColumnRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if (value instanceof DefaultMutableTreeNode) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-            CallTreeNode callTreeNode = (CallTreeNode) node.getUserObject();
-            if (callTreeNode != null) {
-                return createProgressBar(callTreeNode);
-            }
+        if (value != null && value instanceof CallTreeNode) {
+            CallTreeNode callTreeNode = (CallTreeNode) value;
+            return createProgressBar(callTreeNode);
         }
         return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
     }

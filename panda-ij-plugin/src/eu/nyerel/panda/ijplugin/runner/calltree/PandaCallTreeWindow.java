@@ -11,8 +11,9 @@ import com.intellij.ui.AnActionButton;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.content.ContentManager;
+import com.intellij.ui.dualView.TreeTableView;
 import com.intellij.ui.treeStructure.treetable.TreeTable;
-import eu.nyerel.panda.ijplugin.runner.PandaSettings;
+import eu.nyerel.panda.ijplugin.runner.calltree.model.EmptyCallTreeModel;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -60,11 +61,7 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
 
     private void createUIComponents() {
         EmptyCallTreeModel model = new EmptyCallTreeModel();
-        if (PandaSettings.INSTANCE.isAggregateCallTree()) {
-            callTreeTable = new AggregatedCallTreeTable(model);
-        } else {
-            callTreeTable = new CallTreeTable(model);
-        }
+        callTreeTable = new TreeTableView(model);
     }
 
 }

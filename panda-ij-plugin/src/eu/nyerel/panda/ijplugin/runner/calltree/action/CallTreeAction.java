@@ -6,10 +6,10 @@ import com.intellij.ui.treeStructure.treetable.TreeTable;
 import eu.nyerel.panda.ijplugin.data.AgentFacade;
 import eu.nyerel.panda.ijplugin.data.DumpFileReader;
 import eu.nyerel.panda.ijplugin.runner.PandaSettings;
-import eu.nyerel.panda.ijplugin.runner.calltree.AggregatedCallTreeNodeModel;
+import eu.nyerel.panda.ijplugin.runner.calltree.model.AggregatedCallTreeTableModel;
 import eu.nyerel.panda.ijplugin.runner.calltree.CallTreeAggregator;
-import eu.nyerel.panda.ijplugin.runner.calltree.CallTreeNodeModel;
-import eu.nyerel.panda.ijplugin.runner.calltree.EmptyCallTreeModel;
+import eu.nyerel.panda.ijplugin.runner.calltree.model.CallTreeTableModel;
+import eu.nyerel.panda.ijplugin.runner.calltree.model.EmptyCallTreeModel;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 
 import javax.swing.*;
@@ -78,7 +78,7 @@ public abstract class CallTreeAction extends AnActionButton {
     }
 
     private void drawSimpleTree(final TreeTable callTreeTable, final List<CallTreeNode> callTreeNodes) {
-        CallTreeNodeModel model = new AggregatedCallTreeNodeModel(callTreeNodes);
+        CallTreeTableModel model = new CallTreeTableModel(callTreeNodes);
         callTreeTable.setModel(model);
         callTreeTable.setRootVisible(false);
         callTreeTable.getColumnModel().getColumn(0).setPreferredWidth(450);
@@ -86,7 +86,7 @@ public abstract class CallTreeAction extends AnActionButton {
     }
 
     private void drawAggregatedTree(final TreeTable callTreeTable, final List<CallTreeNode> callTreeNodes) {
-        CallTreeNodeModel model = new AggregatedCallTreeNodeModel(callTreeNodes);
+        CallTreeTableModel model = new AggregatedCallTreeTableModel(callTreeNodes);
         callTreeTable.setModel(model);
         callTreeTable.setRootVisible(false);
         callTreeTable.getColumnModel().getColumn(0).setPreferredWidth(400);
