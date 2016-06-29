@@ -45,9 +45,10 @@ public class TestService {
     }
 
     public void waitFor(long millis) {
-        long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() < (start + millis)) {
-
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
