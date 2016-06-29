@@ -9,12 +9,9 @@ import java.util.List;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public interface MonitoringResultService extends Remote {
+public interface MonitoringResultService {
 
-    List<CallTreeNode> getCallTree() throws RemoteException;
-
-    void shutdown() throws RemoteException;
-
-    void clear() throws RemoteException;
+    List<CallTreeNode> getCallTree();
+    void clear();
 
 }

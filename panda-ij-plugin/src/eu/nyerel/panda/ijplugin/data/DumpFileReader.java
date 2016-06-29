@@ -27,23 +27,10 @@ public enum DumpFileReader {
     }
 
     private List<CallTreeNode> readCallTree(File file) {
-        ObjectInput input;
-        FileInputStream is = null;
-        try {
-            is = new FileInputStream(file);
-            InputStream buffer = new BufferedInputStream(is);
-            input = new ObjectInputStream(buffer);
-            return ((CallTreeList) input.readObject()).getNodes();
-        } catch (Exception e) {
+        try (InputStream is = new FileInputStream(file)) {
+            return CallTreeListReader.INSTANCE.read(is).getNodes();
+        } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    LOG.error("Error while closing input stream of file " + file, e);
-                }
-            }
         }
     }
 
@@ -54,7 +41,6 @@ public enum DumpFileReader {
     private File getTempDir() {
         return new File(System.getProperty("java.io.tmpdir"));
     }
-
 
     public void clear() {
         File dumpFile = getDumpFile();
