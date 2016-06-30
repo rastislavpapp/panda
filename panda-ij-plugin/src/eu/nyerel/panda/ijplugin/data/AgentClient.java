@@ -25,7 +25,7 @@ public class AgentClient {
     }
 
     private byte[] sendInternal(String message) throws IOException {
-        try (Socket echoSocket = new Socket(HOSTNAME, Constants.RMI_PORT);
+            try (Socket echoSocket = new Socket(HOSTNAME, Constants.RMI_PORT);
              PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
              InputStream is = echoSocket.getInputStream()) {
             out.println(message);
@@ -40,7 +40,7 @@ public class AgentClient {
             String ping = new String(sendInternal("ping"), "UTF-8");
             return "pong".equals(ping.trim());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 

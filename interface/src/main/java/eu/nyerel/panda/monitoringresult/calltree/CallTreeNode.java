@@ -66,4 +66,9 @@ public class CallTreeNode implements Serializable {
         this.children = children;
     }
 
+    @Override
+    public String toString() {
+        return description + "(" + duration + ")";
+    }
+
 }

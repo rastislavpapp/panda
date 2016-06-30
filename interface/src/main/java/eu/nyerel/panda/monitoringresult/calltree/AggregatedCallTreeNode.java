@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class AggregatedCallTreeNode extends CallTreeNode {
 
-    private int aggregateCount;
+    private int aggregateCount = 1;
 
     public AggregatedCallTreeNode() {
     }

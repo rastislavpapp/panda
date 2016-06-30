@@ -18,6 +18,7 @@ public enum PandaSettings {
     private static final String PROPERTY_PANDA_MONITORED_CLASSES = "panda.monitored.classes";
 
     private boolean aggregateCallTree = true;
+    private boolean showPackageName;
 
     public boolean isAggregateCallTree() {
         return aggregateCallTree;
@@ -79,6 +80,14 @@ public enum PandaSettings {
             }
             return list.toArray(new String[list.size()]);
         }
+    }
+
+    public boolean isShowPackageName() {
+        return showPackageName;
+    }
+
+    public void setShowPackageName(boolean showPackageName) {
+        this.showPackageName = showPackageName;
     }
 
 }

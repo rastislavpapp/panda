@@ -16,13 +16,15 @@ public class AggregatedCallTreeTableModel extends CallTreeTableModel {
     private static final ColumnInfo[] COLUMNS = new ColumnInfo[] {
             new MethodColumnInfo(),
             new CallCountColumnInfo(),
-            new DurationColumnInfo()
+            new TotalDurationColumnInfo(),
+            new SelfDurationColumnInfo()
     };
 
-    private static class CallCountColumnInfo extends ColumnInfo<DefaultMutableTreeNode, Integer> {
+    private static class CallCountColumnInfo extends ColumnInfo<DefaultMutableTreeNode, Integer>
+        implements WidthAware {
 
         CallCountColumnInfo() {
-            super("Call Count");
+            super("Invocations");
         }
 
         @Nullable
@@ -30,6 +32,11 @@ public class AggregatedCallTreeTableModel extends CallTreeTableModel {
         public Integer valueOf(DefaultMutableTreeNode node) {
             CallTreeNodeDescriptor descriptor = (CallTreeNodeDescriptor) node.getUserObject();
             return ((AggregatedCallTreeNode) descriptor.getCallTreeNode()).getAggregateCount();
+        }
+
+        @Override
+        public int getPreferredWidth() {
+            return 30;
         }
 
     }

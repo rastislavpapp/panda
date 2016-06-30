@@ -66,4 +66,22 @@ public class CallTreeNodeDuration implements Serializable {
         this.percentage = percentage;
     }
 
+    @Override
+    public String toString() {
+        return "total: " + formatTotal() + ", self: " + formatSelf();
+    }
+
+    public String formatTotal() {
+        return total + " ms (" + formatPercentage(percentage) + ")";
+    }
+
+    private String formatPercentage(double percentage) {
+        return Math.round(Math.round((100 * percentage))) + "%";
+    }
+
+    public String formatSelf() {
+        long percentage = total == 0 ? 0 : self / total;
+        return self + " ms (" + formatPercentage(percentage) + ")";
+    }
+
 }

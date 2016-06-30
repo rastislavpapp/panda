@@ -1,16 +1,12 @@
 package eu.nyerel.panda.ijplugin.runner.calltree.model;
 
-import com.intellij.ide.projectView.PresentationData;
-import com.intellij.ide.util.treeView.NodeDescriptor;
-import com.intellij.ide.util.treeView.PresentableNodeDescriptor;
 import com.intellij.ui.treeStructure.treetable.ListTreeTableModelOnColumns;
 import com.intellij.ui.treeStructure.treetable.TreeColumnInfo;
 import com.intellij.util.ui.ColumnInfo;
-import eu.nyerel.panda.ijplugin.runner.calltree.model.renderer.DurationColumnRenderer;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
+import eu.nyerel.panda.monitoringresult.calltree.CallTreeNodeDuration;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -23,35 +19,63 @@ public class CallTreeTableModel extends ListTreeTableModelOnColumns {
 
     private static final ColumnInfo[] COLUMNS = new ColumnInfo[] {
             new MethodColumnInfo(),
-            new DurationColumnInfo()
+            new TotalDurationColumnInfo(),
+            new SelfDurationColumnInfo()
     };
     private final ColumnInfo[] columnInfos;
 
-    static class MethodColumnInfo extends TreeColumnInfo {
+    static class MethodColumnInfo extends TreeColumnInfo implements WidthAware {
         MethodColumnInfo() {
             super("Method");
         }
+
+        @Override
+        public int getPreferredWidth() {
+            return 400;
+        }
+
     }
 
-    static class DurationColumnInfo extends ColumnInfo<DefaultMutableTreeNode, CallTreeNode> {
+    static class SelfDurationColumnInfo extends ColumnInfo<DefaultMutableTreeNode, String>
+        implements WidthAware {
 
-        static final DurationColumnRenderer RENDERER = new DurationColumnRenderer();
-
-        DurationColumnInfo() {
-            super("Duration");
+        public SelfDurationColumnInfo() {
+            super("Self Time");
         }
 
         @Nullable
         @Override
-        public TableCellRenderer getRenderer(DefaultMutableTreeNode node) {
-            return RENDERER;
-        }
-
-        @Nullable
-        @Override
-        public CallTreeNode valueOf(DefaultMutableTreeNode node) {
+        public String valueOf(DefaultMutableTreeNode node) {
             CallTreeNodeDescriptor descriptor = (CallTreeNodeDescriptor) node.getUserObject();
-            return descriptor.getCallTreeNode();
+            CallTreeNodeDuration duration = descriptor.getCallTreeNode().getDuration();
+            return duration.formatSelf();
+        }
+
+        @Override
+        public int getPreferredWidth() {
+            return 30;
+        }
+
+    }
+
+    static class TotalDurationColumnInfo extends ColumnInfo<DefaultMutableTreeNode, String>
+            implements WidthAware {
+
+        TotalDurationColumnInfo() {
+            super("Total Time");
+        }
+
+        @Nullable
+        @Override
+        public String valueOf(DefaultMutableTreeNode node) {
+            CallTreeNodeDescriptor descriptor = (CallTreeNodeDescriptor) node.getUserObject();
+            CallTreeNodeDuration duration = descriptor.getCallTreeNode().getDuration();
+            return duration.formatTotal();
+        }
+
+        @Override
+        public int getPreferredWidth() {
+            return 30;
         }
 
     }
