@@ -1,12 +1,11 @@
 package eu.nyerel.panda.ijplugin.data;
 
+import eu.nyerel.dolphin.core.client.DolphinObjectFactory;
+import eu.nyerel.dolphin.core.server.DolphinManagementInterface;
 import eu.nyerel.panda.monitoringresult.MonitoringResultService;
-import eu.nyerel.panda.monitoringresult.calltree.CallTreeList;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.net.ConnectException;
 import java.util.List;
 
 /**
@@ -16,35 +15,29 @@ public enum AgentFacade {
 
     INSTANCE;
 
-    private AgentClient agentClient = new AgentClient();
+    private DolphinObjectFactory clientFactory = new DolphinObjectFactory();
 
-    private MonitoringResultService monitoringResultService = new MonitoringResultService() {
-        @Override
-        public List<CallTreeNode> getCallTree() {
-            byte[] response = agentClient.send("getCallTree");
-            ByteArrayInputStream is = new ByteArrayInputStream(response);
-            CallTreeList callTreeList = CallTreeListReader.INSTANCE.read(is);
-            return callTreeList.getNodes();
-        }
-
-        @Override
-        public void clear() {
-            agentClient.send("clearData");
-        }
-
-    };
+    private MonitoringResultService monitoringResultService = clientFactory.create(MonitoringResultService.class);
+    private DolphinManagementInterface management = clientFactory.create(DolphinManagementInterface.class);
 
     public List<CallTreeNode> getCallTree() {
         return monitoringResultService.getCallTree();
     }
 
     public boolean isRunning() {
-        return agentClient.isServerRunning();
+        try {
+            return management.isRunning();
+        } catch (Exception e) {
+            if (e.getCause() != null && e.getCause().getClass().equals(ConnectException.class)) {
+                return false;
+            }
+            throw e;
+        }
     }
 
     public void shutdown() {
         if (isRunning()) {
-            agentClient.send("stop");
+            management.stop();
         }
     }
 
