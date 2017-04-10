@@ -48,7 +48,7 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
         ActionGroup actionGroup = (ActionGroup) actionManager.getAction("CallTreeToolWindowGroup");
 
         ActionToolbar toolbar = actionManager.createActionToolbar("", actionGroup, true);
-        java.util.List<AnAction> actions = toolbar.getActions(true);
+        java.util.List<AnAction> actions = toolbar.getActions();
         for (AnAction action : actions) {
             if (action instanceof AnActionButton) {
                 ((AnActionButton) action).setContextComponent(callTreeTable);
