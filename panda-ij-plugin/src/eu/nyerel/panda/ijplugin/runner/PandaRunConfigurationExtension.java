@@ -42,7 +42,7 @@ public class PandaRunConfigurationExtension extends RunConfigurationExtension {
     @Nullable
     @Override
     protected String getEditorTitle() {
-        return "PandaX";
+        return "Panda";
     }
 
     @Override
