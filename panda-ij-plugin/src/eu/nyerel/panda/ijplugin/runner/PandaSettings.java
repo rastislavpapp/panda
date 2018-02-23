@@ -18,10 +18,28 @@ public enum PandaSettings {
     private static final String PROPERTY_PANDA_MONITORED_CLASSES = "panda.monitored.classes";
 
     private boolean aggregateCallTree = true;
+    private boolean callTreeStructured = true;
+    private boolean sortByDuration = true;
     private boolean showPackageName;
+
+    public boolean isCallTreeStructured() {
+        return callTreeStructured;
+    }
 
     public boolean isAggregateCallTree() {
         return aggregateCallTree;
+    }
+
+    public boolean isSortByDuration() {
+        return sortByDuration;
+    }
+
+    public void setSortByDuration(boolean sortByDuration) {
+        this.sortByDuration = sortByDuration;
+    }
+
+    public void setCallTreeStructured(boolean callTreeStructured) {
+        this.callTreeStructured = callTreeStructured;
     }
 
     public void setAggregateCallTree(boolean aggregateCallTree) {

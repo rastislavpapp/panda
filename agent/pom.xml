@@ -23,7 +23,7 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <finalName>${artifactId}</finalName>
+                            <finalName>${project.artifactId}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -53,7 +53,7 @@
                         </goals>
                         <configuration>
                             <target name="copy agent jar file to ij-plugin sources">
-                                <copy file="${project.build.directory}/${artifactId}.jar"
+                                <copy file="${project.build.directory}/${project.artifactId}.jar"
                                       todir="${project.basedir}/../panda-ij-plugin/src"/>
                             </target>
                         </configuration>

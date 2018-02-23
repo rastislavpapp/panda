@@ -18,11 +18,6 @@ public class AggregatedCallTreeNode extends CallTreeNode {
         setDescription(node.getDescription());
         setDuration(node.getDuration());
         setParent(node.getParent());
-        setChildren(new ArrayList<CallTreeNode>());
-
-        for (CallTreeNode child : node.getChildren()) {
-            getChildren().add(new AggregatedCallTreeNode(child));
-        }
     }
 
     public int getAggregateCount() {

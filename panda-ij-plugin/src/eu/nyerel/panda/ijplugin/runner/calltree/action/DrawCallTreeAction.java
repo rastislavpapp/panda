@@ -5,17 +5,15 @@ import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.treeStructure.treetable.TreeTable;
-import com.intellij.util.concurrency.SwingWorker;
 import com.intellij.util.ui.ColumnInfo;
-import com.intellij.util.ui.SwingHelper;
 import eu.nyerel.panda.ijplugin.data.AgentFacade;
 import eu.nyerel.panda.ijplugin.data.DumpFileReader;
 import eu.nyerel.panda.ijplugin.runner.PandaSettings;
-import eu.nyerel.panda.ijplugin.runner.calltree.CallTreeAggregator;
 import eu.nyerel.panda.ijplugin.runner.calltree.model.AggregatedCallTreeTableModel;
 import eu.nyerel.panda.ijplugin.runner.calltree.model.CallTreeTableModel;
 import eu.nyerel.panda.ijplugin.runner.calltree.model.EmptyCallTreeModel;
 import eu.nyerel.panda.ijplugin.runner.calltree.model.WidthAware;
+import eu.nyerel.panda.ijplugin.runner.calltree.support.CallTreeNodeUtils;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,10 +47,20 @@ public enum DrawCallTreeAction {
         } else {
             nodes = DumpFileReader.INSTANCE.read();
         }
+        boolean structured = PandaSettings.INSTANCE.isCallTreeStructured();
         boolean aggregate = PandaSettings.INSTANCE.isAggregateCallTree();
         if (nodes != null && !nodes.isEmpty()) {
             if (aggregate) {
-                nodes = new CallTreeAggregator().aggregate(nodes);
+                if (structured) {
+                    nodes = CallTreeNodeUtils.aggregate(nodes);
+                } else {
+                    nodes = CallTreeNodeUtils.flatAggregate(nodes);
+                }
+            } else if (!structured) {
+                nodes = CallTreeNodeUtils.flatten(nodes);
+            }
+            if (PandaSettings.INSTANCE.isSortByDuration()) {
+                nodes = CallTreeNodeUtils.sortByDuration(nodes);
             }
             drawNodes(table, nodes);
         } else {
@@ -73,13 +81,10 @@ public enum DrawCallTreeAction {
         } else {
             model = new CallTreeTableModel(nodes);
         }
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                table.setModel(model);
-                table.setRootVisible(false);
-                resizeColumns(table);
-            }
+        SwingUtilities.invokeLater(() -> {
+            table.setModel(model);
+            table.setRootVisible(false);
+            resizeColumns(table);
         });
     }
 

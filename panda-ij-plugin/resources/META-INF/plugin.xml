@@ -50,15 +50,22 @@
         <group id="CallTreeToolWindowGroup">
             <action id="refreshCallTree"
                     class="eu.nyerel.panda.ijplugin.runner.calltree.action.RefreshCallTreeButton"/>
+            <action id="clearCallTree"
+                    class="eu.nyerel.panda.ijplugin.runner.calltree.action.ClearCallTreeButton"/>
+            <separator/>
 
             <action id="toggleCallTreeAggregation"
                     class="eu.nyerel.panda.ijplugin.runner.calltree.action.ToggleCallTreeAggregationButton"/>
+            <action id="toggleCallTreeStructure"
+                    class="eu.nyerel.panda.ijplugin.runner.calltree.action.ToggleCallTreeStructureButton"/>
             <action id="toggleShowPackageName"
                     class="eu.nyerel.panda.ijplugin.runner.calltree.action.ToggleShowPackageNameButton"/>
 
+            <separator/>
 
-            <action id="clearCallTree"
-                    class="eu.nyerel.panda.ijplugin.runner.calltree.action.ClearCallTreeButton"/>
+            <action id="toggleSortByDuration"
+                    class="eu.nyerel.panda.ijplugin.runner.calltree.action.ToggleSortByDurationButton"/>
+
         </group>
     </actions>
 

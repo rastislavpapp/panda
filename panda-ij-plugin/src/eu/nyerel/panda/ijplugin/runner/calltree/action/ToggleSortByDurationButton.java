@@ -9,22 +9,23 @@ import eu.nyerel.panda.ijplugin.runner.PandaSettings;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public class ToggleCallTreeAggregationButton extends ToggleActionButton {
+public class ToggleSortByDurationButton extends ToggleActionButton {
 
-    public ToggleCallTreeAggregationButton() {
-        super("Group by Method", IconLoader.findIcon("/actions/groupByMethod.png"));
+    public ToggleSortByDurationButton() {
+        super("Sort by Duration", IconLoader.findIcon("/actions/sortDesc.png"));
     }
 
     @Override
     public boolean isSelected(AnActionEvent e) {
-        return PandaSettings.INSTANCE.isAggregateCallTree();
+        return PandaSettings.INSTANCE.isSortByDuration();
     }
 
     @Override
     public void setSelected(AnActionEvent e, boolean state) {
-        PandaSettings.INSTANCE.setAggregateCallTree(state);
+        PandaSettings.INSTANCE.setSortByDuration(state);
         DrawCallTreeAction.INSTANCE.drawInBackground(e.getProject(),
                 (TreeTable) getContextComponent());
     }
+
 
 }

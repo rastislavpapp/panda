@@ -18,8 +18,6 @@ import java.util.List;
 public class Bootstrap {
 
     private static final String[] FORBIDDEN_PACKAGES = new String[]{
-            "java",
-            "javax",
             "eu.nyerel.panda.agent"
     };
 
