@@ -5,6 +5,7 @@ import eu.nyerel.panda.agent.monitoring.MonitoredEvent;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNodeDuration;
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNodeType;
+import eu.nyerel.panda.monitoringresult.calltree.SimpleCallTreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +26,14 @@ public class CallTreeCreator {
     }
 
     private CallTreeNode constructCallTreeNode(MonitoredEvent event, long rootNodeDuration) {
-        CallTreeNode node = new CallTreeNode();
-        node.setId(nextId++);
-        node.setType(determineType(event));
-        node.setDescription(event.getDescription());
-        node.setDuration(getDuration(event, rootNodeDuration));
-        node.setChildren(getCallTreeNodeChildren(event, rootNodeDuration));
+        CallTreeNode node = new SimpleCallTreeNode(
+                nextId++,
+                determineType(event),
+                getDuration(event, rootNodeDuration),
+                event.getDescription(),
+                null,
+                getCallTreeNodeChildren(event, rootNodeDuration)
+        );
         for (CallTreeNode child : node.getChildren()) {
             child.setParent(node);
         }

@@ -36,7 +36,7 @@ public enum MonitoringResultDumpWriter {
     }
 
     private File getDumpFile() {
-        File file = new File(getTempDir(), Constants.DUMP_FILE_NAME);
+        File file = new File(getTempDir(), Constants.INSTANCE.getDUMP_FILE_NAME());
         if (!file.exists()) {
             try {
                 file.createNewFile();

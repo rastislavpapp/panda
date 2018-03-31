@@ -12,7 +12,7 @@ import java.lang.instrument.ClassFileTransformer;
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-public class MonitorClassFileTransformer extends AbstractClassFileTransformer implements ClassFileTransformer {
+public class MonitorClassFileTransformer extends AbstractClassFileTransformer {
 
     private MonitoredMethodTransformer transformer = new MonitoredMethodTransformer();
 
