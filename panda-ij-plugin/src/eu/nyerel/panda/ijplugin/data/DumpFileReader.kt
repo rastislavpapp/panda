@@ -19,6 +19,11 @@ object DumpFileReader {
     private val tempDir: File
         get() = File(System.getProperty("java.io.tmpdir"))
 
+    init {
+        LOG.debug("Clearing previous dump file")
+        clear()
+    }
+
     fun read(): List<CallTreeNode> {
         return if (dumpFile.exists()) {
             readCallTree(dumpFile)
