@@ -39,7 +39,9 @@
     </extensions>
 
     <application-components>
-        <!-- Add your application components here -->
+        <component>
+            <implementation-class>eu.nyerel.panda.ijplugin.PandaPlugin</implementation-class>
+        </component>
     </application-components>
 
     <project-components>

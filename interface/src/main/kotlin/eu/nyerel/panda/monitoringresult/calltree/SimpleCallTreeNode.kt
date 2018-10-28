@@ -8,7 +8,7 @@ data class SimpleCallTreeNode(override val id: Long,
                               override val duration: CallTreeNodeDuration,
                               override val description: String,
                               override var parent: CallTreeNode?,
-                              override val children: List<CallTreeNode>) : CallTreeNode {
+                              override var children: List<CallTreeNode>) : CallTreeNode {
 
     override fun toString(): String {
         return "$description($duration)"

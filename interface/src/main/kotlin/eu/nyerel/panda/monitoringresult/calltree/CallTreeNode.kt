@@ -8,5 +8,5 @@ interface CallTreeNode : Serializable {
     val duration: CallTreeNodeDuration
     val description: String
     var parent: CallTreeNode?
-    val children: List<CallTreeNode>
+    var children: List<CallTreeNode>
 }
