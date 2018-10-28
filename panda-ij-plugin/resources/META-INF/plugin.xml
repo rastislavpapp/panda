@@ -68,6 +68,12 @@
             <action id="toggleSortByDuration"
                     class="eu.nyerel.panda.ijplugin.runner.calltree.action.ToggleSortByDurationButton"/>
 
+
+            <group id="CallTreeToolWindowSettingsGroup" popup="true" text="Settings" icon="PandaIcons.SETTINGS">
+                <action id="CallTreeToolWindowSettingsGroup.hideProxyClasses"
+                        class="eu.nyerel.panda.ijplugin.runner.calltree.action.ToggleHideProxyClassesAction"/>
+            </group>
+
         </group>
     </actions>
 

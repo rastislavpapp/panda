@@ -5,12 +5,15 @@ import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode
 
 import java.util.ArrayList
 import java.util.HashMap
-import java.util.stream.Collectors
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
 object CallTreeNodeUtils {
+
+    val PROXY_CLASS_FILTER: (CallTreeNode) -> Boolean = {
+        it.description.contains("\$\$EnhancerBySpringCGLIB") || it.description.contains("\$\$FastClassBySpringCGLIB")
+    }
 
     fun sortByDuration(nodes: List<CallTreeNode>) {
         val comparator = compareBy<CallTreeNode>(
@@ -55,6 +58,20 @@ object CallTreeNodeUtils {
             }
         }
         return ArrayList<CallTreeNode>(aggregatedNodes.values)
+    }
+
+    fun exclude(nodes: List<CallTreeNode>, exclusionFilter: (CallTreeNode) -> Boolean): List<CallTreeNode> {
+        val newNodes = mutableListOf<CallTreeNode>()
+        for (node in nodes) {
+            val children = exclude(node.children, exclusionFilter)
+            if (exclusionFilter(node)) {
+                newNodes.addAll(children)
+            } else {
+                node.children = children
+                newNodes.add(node)
+            }
+        }
+        return newNodes
     }
 
     private fun aggregateNode(sum: AggregatedCallTreeNode, node: CallTreeNode) {

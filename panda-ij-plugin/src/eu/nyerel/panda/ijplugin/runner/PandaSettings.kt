@@ -17,7 +17,8 @@ object PandaSettings {
     var isAggregateCallTree = true
     var isCallTreeStructured = true
     var isSortByDuration = true
-    var isShowPackageName: Boolean = false
+    var isShowPackageName = false
+    var hideProxyClasses = true
 
     fun getMonitoredClasses(project: Project): Array<ClassFilter> {
         return getClasses(project, PROPERTY_PANDA_MONITORED_CLASSES)

@@ -8,9 +8,13 @@ data class Method(val className: String,
                   val packageName: String,
                   val signature: String,
                   val signatureFull: String,
+                  val args: List<String>,
                   val name: String) {
 
     val descriptionWithoutPackageName: String
-        get() = classNameSimple + "." + signature
+        get() = "$classNameSimple.$name${argsWithoutPackageName.joinToString(",", "(", ")")}"
+
+    private val argsWithoutPackageName: List<String>
+        get() = args.map { it.substringAfterLast(".") }
 
 }

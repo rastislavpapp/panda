@@ -13,8 +13,18 @@ object MethodDescriptionParser {
         lastPeriod = className.lastIndexOf(".")
         val packageName = className.substring(0, lastPeriod)
         val classNameSimple = className.substring(lastPeriod + 1)
+        val args = parseArgs(signature)
 
-        return Method(className, classNameSimple, packageName, signature, description, methodName)
+        return Method(className, classNameSimple, packageName, signature, description,  args, methodName)
+    }
+
+    private fun parseArgs(signature: String): List<String> {
+        val args = signature.substringAfter("(").substringBefore(")")
+        return if (args.isNotEmpty()) {
+            args.split(",")
+        } else {
+            emptyList()
+        }
     }
 
 }

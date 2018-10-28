@@ -47,7 +47,7 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
         ActionManager actionManager = ActionManager.getInstance();
         ActionGroup actionGroup = (ActionGroup) actionManager.getAction("CallTreeToolWindowGroup");
 
-        ActionToolbar toolbar = actionManager.createActionToolbar("", actionGroup, true);
+        ActionToolbar toolbar = actionManager.createActionToolbar("CallTreeToolWindowToolbar", actionGroup, true);
         java.util.List<AnAction> actions = toolbar.getActions();
         for (AnAction action : actions) {
             if (action instanceof AnActionButton) {
@@ -62,6 +62,7 @@ public class PandaCallTreeWindow implements ToolWindowFactory {
     private void createUIComponents() {
         EmptyCallTreeModel model = new EmptyCallTreeModel();
         callTreeTable = new TreeTableView(model);
+        CallTreeDrawer.table = callTreeTable;
     }
 
 }

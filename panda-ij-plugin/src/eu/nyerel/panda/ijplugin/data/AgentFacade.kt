@@ -39,7 +39,11 @@ object AgentFacade {
     }
 
     fun clear() {
-        monitoringResultService.clear()
+        try {
+            monitoringResultService.clear()
+        } catch (e: Exception) {
+            //do nothing
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package eu.nyerel.panda.ijplugin.runner.calltree.action
+package eu.nyerel.panda.ijplugin.runner.calltree
 
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
@@ -20,20 +20,22 @@ import javax.swing.*
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
  */
-object DrawCallTreeAction {
+object CallTreeDrawer {
 
-    fun drawInBackground(project: Project?, table: TreeTable) {
+    lateinit var table: TreeTable
+
+    fun drawInBackground(project: Project?) {
         ProgressManager.getInstance().run(
                 object : Task.Backgroundable(project, "Updating Call Tree", false) {
                     override fun run(indicator: ProgressIndicator) {
                         indicator.isIndeterminate = true
-                        draw(table)
+                        draw()
                     }
                 }
         )
     }
 
-    fun draw(table: TreeTable) {
+    fun draw() {
         var nodes: List<CallTreeNode> =
                 if (AgentFacade.isRunning)
                     AgentFacade.callTree
@@ -55,24 +57,27 @@ object DrawCallTreeAction {
             if (PandaSettings.isSortByDuration) {
                 CallTreeNodeUtils.sortByDuration(nodes)
             }
-            drawNodes(table, nodes)
+            if (PandaSettings.hideProxyClasses) {
+                nodes = CallTreeNodeUtils.exclude(nodes, CallTreeNodeUtils.PROXY_CLASS_FILTER)
+            }
+            drawNodes(nodes)
         } else {
-            drawEmpty(table)
+            drawEmpty()
         }
     }
 
-    fun drawEmpty(table: TreeTable) {
+    fun drawEmpty() {
         table.setModel(EmptyCallTreeModel())
         table.setRootVisible(true)
     }
 
-    private fun drawNodes(table: TreeTable, nodes: List<CallTreeNode>) {
+    private fun drawNodes(nodes: List<CallTreeNode>) {
         val aggregate = PandaSettings.isAggregateCallTree
         val model: CallTreeTableModel
-        if (aggregate) {
-            model = AggregatedCallTreeTableModel(nodes)
+        model = if (aggregate) {
+            AggregatedCallTreeTableModel(nodes)
         } else {
-            model = CallTreeTableModel(nodes)
+            CallTreeTableModel(nodes)
         }
         SwingUtilities.invokeLater {
             table.setModel(model)

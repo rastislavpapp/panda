@@ -24,7 +24,6 @@ class AggregatedCallTreeTableModel(nodes: List<CallTreeNode>) : CallTreeTableMod
     }
 
     companion object {
-
         private val COLUMNS = arrayOf<ColumnInfo<*, *>>(CallTreeTableModel.MethodColumnInfo(), CallCountColumnInfo(), CallTreeTableModel.TotalDurationColumnInfo(), CallTreeTableModel.SelfDurationColumnInfo())
     }
 

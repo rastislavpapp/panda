@@ -6,9 +6,9 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.AnActionButton
-import com.intellij.ui.treeStructure.treetable.TreeTable
 import eu.nyerel.panda.ijplugin.data.AgentFacade
 import eu.nyerel.panda.ijplugin.data.DumpFileReader
+import eu.nyerel.panda.ijplugin.runner.calltree.CallTreeDrawer
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -22,7 +22,7 @@ class ClearCallTreeButton : AnActionButton("Clear All", IconLoader.findIcon("/ac
                         indicator.isIndeterminate = true
                         AgentFacade.clear()
                         DumpFileReader.clear()
-                        DrawCallTreeAction.drawEmpty(contextComponent as TreeTable)
+                        CallTreeDrawer.drawEmpty()
                     }
                 }
         )
