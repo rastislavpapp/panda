@@ -11,13 +11,29 @@ import java.util.List;
  */
 public class Configuration {
 
+    private static List<String> monitoredClasses;
+    private static List<String> excludedClasses;
+
+    public static void init() {
+        monitoredClasses = getClassPatternList("panda.monitored.classes");
+        excludedClasses = getClassPatternList("panda.excluded.classes");
+    }
+
     public static List<String> getMonitoredClasses() {
-        List<String> monitoredClasses = new ArrayList<String>();
-        String monitoredClassesStr = System.getProperty("panda.monitored.classes");
-        if (monitoredClassesStr != null && !monitoredClassesStr.isEmpty()) {
-            Collections.addAll(monitoredClasses, monitoredClassesStr.split(","));
-        }
         return monitoredClasses;
+    }
+
+    public static List<String> getExcludedClasses() {
+        return excludedClasses;
+    }
+
+    private static List<String> getClassPatternList(String property) {
+        List<String> classes = new ArrayList<String>();
+        String classesStr = System.getProperty(property);
+        if (classesStr != null && !classesStr.isEmpty()) {
+            Collections.addAll(classes, classesStr.split(","));
+        }
+        return classes;
     }
 
     public static Log.Level getLogLevel() {

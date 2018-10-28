@@ -30,9 +30,11 @@ public class Bootstrap {
     public void init() {
         initLogLevel();
         Log.info("Initializing Panda monitoring...");
+        Configuration.init();
         List<String> monitoredClasses = Configuration.getMonitoredClasses();
         validateMonitoredClasses(monitoredClasses);
         Log.info("Monitored classes = {0}", monitoredClasses);
+        Log.info("Excluded classes = {0}", Configuration.getExcludedClasses());
         inst.addTransformer(new MonitorClassFileTransformer());
         MonitoringEventListenerRegistry.register(MonitoringResultServiceImpl.INSTANCE);
         MonitoringEventListenerRegistry.register(MonitoredEventRecorderFactory.INSTANCE);

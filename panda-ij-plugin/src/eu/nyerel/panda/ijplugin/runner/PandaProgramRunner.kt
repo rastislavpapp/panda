@@ -42,11 +42,16 @@ class PandaProgramRunner : DefaultJavaProgramRunner() {
             vmParametersList.add("-javaagent:$agentFilePath")
             val project = (runProfile as RunConfigurationBase).project
             vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(project))
+            vmParametersList.add("-Dpanda.excluded.classes=" + getExcludedClassesString(project))
         }
     }
 
     private fun getMonitoredClassesString(project: Project): String {
         return PandaSettings.getMonitoredClassesAsString(project)
+    }
+
+    private fun getExcludedClassesString(project: Project): String {
+        return PandaSettings.getExcludedClassesAsString(project)
     }
 
     @Throws(ExecutionException::class)

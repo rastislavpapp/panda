@@ -7,7 +7,7 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
-import java.lang.instrument.ClassFileTransformer;
+import java.util.List;
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -18,7 +18,16 @@ public class MonitorClassFileTransformer extends AbstractClassFileTransformer {
 
     @Override
     protected boolean shouldTransform(String className) {
-        for (String classNamePattern : Configuration.getMonitoredClasses()) {
+        List<String> excludedClasses = Configuration.getExcludedClasses();
+        List<String> monitoredClasses = Configuration.getMonitoredClasses();
+
+        for (String excludedClass : excludedClasses) {
+            if (isClass(className, excludedClass) || isFromPackage(className, excludedClass)) {
+                return false;
+            }
+        }
+
+        for (String classNamePattern : monitoredClasses) {
             if (isClass(className, classNamePattern) || isFromPackage(className, classNamePattern)) {
                 return true;
             }

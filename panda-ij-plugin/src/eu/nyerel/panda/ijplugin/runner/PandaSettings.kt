@@ -7,6 +7,7 @@ import com.intellij.ui.classFilter.ClassFilter
 import java.util.ArrayList
 
 private const val PROPERTY_PANDA_MONITORED_CLASSES = "panda.monitored.classes"
+private const val PROPERTY_PANDA_EXCLUDED_CLASSES = "panda.excluded.classes"
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -18,18 +19,35 @@ object PandaSettings {
     var isSortByDuration = true
     var isShowPackageName: Boolean = false
 
-    fun getMonitoredClasses(project: Project): Array<ClassFilter>? {
+    fun getMonitoredClasses(project: Project): Array<ClassFilter> {
+        return getClasses(project, PROPERTY_PANDA_MONITORED_CLASSES)
+    }
+
+    fun getExcludedClasses(project: Project): Array<ClassFilter> {
+        return getClasses(project, PROPERTY_PANDA_EXCLUDED_CLASSES)
+    }
+
+    private fun getClasses(project: Project, propertyName: String): Array<ClassFilter> {
         val properties = PropertiesComponent.getInstance(project)
-        val classesProperty = properties.getValues(PROPERTY_PANDA_MONITORED_CLASSES)
+        val classesProperty = properties.getValues(propertyName)
         return if (classesProperty != null) {
             convertToMonitoredClasses(classesProperty)
         } else {
-            null
+            emptyArray()
         }
     }
 
     fun getMonitoredClassesAsString(project: Project): String {
         val monitoredClasses = convertToStringArray(getMonitoredClasses(project))
+        return convertArrayToString(monitoredClasses)
+    }
+
+    fun getExcludedClassesAsString(project: Project): String {
+        val monitoredClasses = convertToStringArray(getExcludedClasses(project))
+        return convertArrayToString(monitoredClasses)
+    }
+
+    private fun convertArrayToString(monitoredClasses: Array<String>?): String {
         val sb = StringBuilder()
         if (monitoredClasses != null) {
             for (i in monitoredClasses.indices) {
@@ -47,6 +65,11 @@ object PandaSettings {
         properties.setValues(PROPERTY_PANDA_MONITORED_CLASSES, convertToStringArray(monitoredClasses))
     }
 
+    fun setExcludedClasses(project: Project, excludedClasses: Array<ClassFilter>) {
+        val properties = PropertiesComponent.getInstance(project)
+        properties.setValues(PROPERTY_PANDA_EXCLUDED_CLASSES, convertToStringArray(excludedClasses))
+    }
+
     private fun convertToMonitoredClasses(monitoredClassPatterns: Array<String>): Array<ClassFilter> {
         val classFilterList = ArrayList<ClassFilter>()
         for (monitoredClassPattern in monitoredClassPatterns) {
@@ -58,8 +81,8 @@ object PandaSettings {
     }
 
     private fun convertToStringArray(monitoredClasses: Array<ClassFilter>?): Array<String>? {
-        if (monitoredClasses == null) {
-            return null
+        return if (monitoredClasses == null) {
+            null
         } else {
             val list = ArrayList<String>()
             for (monitoredClass in monitoredClasses) {
@@ -67,7 +90,7 @@ object PandaSettings {
                     list.add(monitoredClass.pattern)
                 }
             }
-            return list.toTypedArray()
+            list.toTypedArray()
         }
     }
 
