@@ -13,12 +13,12 @@ data class AggregatedCallTreeNode(private val node: CallTreeNode) : CallTreeNode
         get() = node.id
     override val type: CallTreeNodeType
         get() = node.type
-    override var duration: CallTreeNodeDuration = node.duration
+    override var duration: CallTreeNodeDuration = CallTreeNodeDuration()
     override val description: String
         get() = node.description
     override var parent: CallTreeNode? = null
         get() = node.parent
     override var children: List<CallTreeNode> = ArrayList()
-    var aggregateCount = 1
+    var aggregateCount = 0
 
 }

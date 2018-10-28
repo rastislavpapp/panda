@@ -4,7 +4,7 @@ import eu.nyerel.panda.ijplugin.model.AggregatedCallTreeNode
 import eu.nyerel.panda.monitoringresult.calltree.CallTreeNode
 
 import java.util.ArrayList
-import java.util.HashMap
+import java.util.LinkedHashMap
 
 /**
  * @author Rastislav Papp (rastislav.papp@gmail.com)
@@ -43,21 +43,71 @@ object CallTreeNodeUtils {
     }
 
     fun aggregate(originalNodes: List<CallTreeNode>): List<CallTreeNode> {
-        val aggregatedNodes = HashMap<String, AggregatedCallTreeNode>()
-        for (original in originalNodes) {
-            var aggregated: AggregatedCallTreeNode? = aggregatedNodes[original.description]
-            if (aggregated == null) {
-                aggregated = AggregatedCallTreeNode(original)
-                aggregatedNodes[aggregated.description] = aggregated
-                aggregated.children = aggregate(original.children)
+        val nodesByDescription = LinkedHashMap<String, MutableList<CallTreeNode>>()
+        for (node in originalNodes) {
+            var list = nodesByDescription[node.description]
+            if (list == null) {
+                list = mutableListOf()
+                nodesByDescription[node.description] = list
+            }
+            list.add(node)
+        }
+
+        val aggregatedNodes = mutableListOf<CallTreeNode>()
+        for (desc in nodesByDescription.keys) {
+            val nodes = ArrayList<CallTreeNode>(nodesByDescription[desc])
+            val aggregatedNode = aggregateNodesIntoOne(nodes)
+            aggregatedNodes.add(aggregatedNode)
+        }
+
+        return aggregatedNodes
+
+//        for (original in originalNodes) {
+//            var aggregated: AggregatedCallTreeNode? = aggregatedNodes[original.description]
+//            if (aggregated == null) {
+//                aggregated = AggregatedCallTreeNode(original)
+//                aggregatedNodes[aggregated.description] = aggregated
+//                aggregated.children = aggregate(original.children)
+//            } else {
+//                aggregateNodeValues(aggregated, original)
+//                val childNodes = ArrayList(original.children)
+//                childNodes.addAll(aggregated.children)
+//                aggregated.children = aggregate(childNodes)
+//            }
+//        }
+//        return ArrayList<CallTreeNode>(aggregatedNodes.values)
+    }
+
+    private fun aggregateNodesIntoOne(nodes: List<CallTreeNode>): AggregatedCallTreeNode {
+        assert(!nodes.isEmpty())
+        val aggregatedNode = AggregatedCallTreeNode(nodes.first())
+
+        val children = mutableListOf<CallTreeNode>()
+        for (node in nodes) {
+            aggregateNodeValues(aggregatedNode, node)
+            children.addAll(node.children)
+        }
+        aggregatedNode.children = aggregate(children)
+
+        return aggregatedNode
+    }
+
+    private fun getNodesAtLevel(node: CallTreeNode, level: Int): List<CallTreeNode> {
+        return if (level == 0) {
+            listOf(node)
+        } else if (level == 1) {
+            node.children
+        } else {
+            if (node.children.isEmpty()) {
+                emptyList()
             } else {
-                aggregateNode(aggregated, original)
-                val childNodes = ArrayList(original.children)
-                childNodes.addAll(aggregated.children)
-                aggregated.children = aggregate(childNodes)
+                val nodeList = mutableListOf<CallTreeNode>()
+                node.children.forEach {
+                    nodeList.addAll(getNodesAtLevel(it, level - 1))
+                }
+                nodeList
             }
         }
-        return ArrayList<CallTreeNode>(aggregatedNodes.values)
     }
 
     fun exclude(nodes: List<CallTreeNode>, exclusionFilter: (CallTreeNode) -> Boolean): List<CallTreeNode> {
@@ -74,9 +124,9 @@ object CallTreeNodeUtils {
         return newNodes
     }
 
-    private fun aggregateNode(sum: AggregatedCallTreeNode, node: CallTreeNode) {
+    private fun aggregateNodeValues(sum: AggregatedCallTreeNode, node: CallTreeNode) {
         sum.duration = sum.duration.add(node.duration)
-        sum.aggregateCount = sum.aggregateCount + 1
+        sum.aggregateCount += if (node is AggregatedCallTreeNode) node.aggregateCount else 1
     }
 
     private fun flatAggregateInternal(originalNodes: List<CallTreeNode>, aggregateMap: MutableMap<String, AggregatedCallTreeNode>): MutableMap<String, AggregatedCallTreeNode> {
@@ -84,11 +134,9 @@ object CallTreeNodeUtils {
             var aggregated: AggregatedCallTreeNode? = aggregateMap[original.description]
             if (aggregated == null) {
                 aggregated = AggregatedCallTreeNode(original)
-                aggregated.children = ArrayList()
                 aggregateMap[aggregated.description] = aggregated
-            } else {
-                aggregateNode(aggregated, original)
             }
+            aggregateNodeValues(aggregated, original)
             flatAggregateInternal(original.children, aggregateMap)
         }
         return aggregateMap

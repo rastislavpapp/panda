@@ -22,7 +22,7 @@ public class TestServiceTest {
         for (int i = 0; i < 10; i++) {
             testService.testInheritance();
             testService.waitFor(100);
-            testService.fastCall();
+            testService.recursiveInternalCall(10, false);
         }
     }
 

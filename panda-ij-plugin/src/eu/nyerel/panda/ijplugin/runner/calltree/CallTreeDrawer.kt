@@ -45,20 +45,20 @@ object CallTreeDrawer {
         val structured = PandaSettings.isCallTreeStructured
         val aggregate = PandaSettings.isAggregateCallTree
         if (!nodes.isEmpty()) {
+            if (PandaSettings.hideProxyClasses) {
+                nodes = CallTreeNodeUtils.exclude(nodes, CallTreeNodeUtils.PROXY_CLASS_FILTER)
+            }
             if (aggregate) {
-                if (structured) {
-                    nodes = CallTreeNodeUtils.aggregate(nodes)
+                nodes = if (structured) {
+                    CallTreeNodeUtils.aggregate(nodes)
                 } else {
-                    nodes = CallTreeNodeUtils.flatAggregate(nodes)
+                    CallTreeNodeUtils.flatAggregate(nodes)
                 }
             } else if (!structured) {
                 nodes = CallTreeNodeUtils.flatten(nodes)
             }
             if (PandaSettings.isSortByDuration) {
                 CallTreeNodeUtils.sortByDuration(nodes)
-            }
-            if (PandaSettings.hideProxyClasses) {
-                nodes = CallTreeNodeUtils.exclude(nodes, CallTreeNodeUtils.PROXY_CLASS_FILTER)
             }
             drawNodes(nodes)
         } else {

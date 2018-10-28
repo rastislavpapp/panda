@@ -38,7 +38,7 @@ public class TestService {
             while (System.currentTimeMillis() < (start + millis)) {
             }
         }
-        if (number > 0) {
+        if (number > 1) {
             return recursiveInternalCall(number - 1, randomWait);
         }
         return "finished";
