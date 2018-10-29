@@ -16,7 +16,7 @@ object PandaSettings {
 
     var isAggregateCallTree = true
     var isCallTreeStructured = true
-    var isSortByDuration = true
+    var isSortByDuration = false
     var isShowPackageName = false
     var hideProxyClasses = true
 
