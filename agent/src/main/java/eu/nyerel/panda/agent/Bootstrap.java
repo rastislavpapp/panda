@@ -43,6 +43,7 @@ public class Bootstrap {
         AgentServer.INSTANCE.start();
         addCallTreeDumpShutdownHook();
         MonitoringResultDumpWriter.INSTANCE.clear();
+        Log.info("Panda monitoring initialization finished");
     }
 
     private void addCallTreeDumpShutdownHook() {
