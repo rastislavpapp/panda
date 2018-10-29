@@ -43,12 +43,11 @@ object CallTreeDrawer {
                     DumpFileReader.read()
 
         val structured = PandaSettings.isCallTreeStructured
-        val aggregate = PandaSettings.isAggregateCallTree
         if (!nodes.isEmpty()) {
             if (PandaSettings.hideProxyClasses) {
                 nodes = CallTreeNodeUtils.exclude(nodes, CallTreeNodeUtils.PROXY_CLASS_FILTER)
             }
-            if (aggregate) {
+            if (PandaSettings.isAggregateCallTree) {
                 nodes = if (structured) {
                     CallTreeNodeUtils.aggregate(nodes)
                 } else {
@@ -58,7 +57,7 @@ object CallTreeDrawer {
                 nodes = CallTreeNodeUtils.flatten(nodes)
             }
             if (PandaSettings.isSortByDuration) {
-                CallTreeNodeUtils.sortByDuration(nodes)
+                nodes = CallTreeNodeUtils.sortByDuration(nodes)
             }
             drawNodes(nodes)
         } else {

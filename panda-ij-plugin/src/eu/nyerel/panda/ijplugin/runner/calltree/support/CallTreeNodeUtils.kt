@@ -15,16 +15,14 @@ object CallTreeNodeUtils {
         it.description.contains("\$\$EnhancerBySpringCGLIB") || it.description.contains("\$\$FastClassBySpringCGLIB")
     }
 
-    fun sortByDuration(nodes: List<CallTreeNode>) {
-        val comparator = compareBy<CallTreeNode>(
-                { it.duration.total },
-                { it.description },
-                { it.id })
+    private val NODE_DURATION_COMPARATOR = compareByDescending<CallTreeNode> { it.duration.total }
+            .thenBy { it.description }.thenBy { it.id }
 
+    fun sortByDuration(nodes: List<CallTreeNode>): List<CallTreeNode> {
         for (node in nodes) {
-            sortByDuration(node.children)
+            node.children = sortByDuration(node.children)
         }
-        nodes.sortedWith(comparator)
+        return nodes.sortedWith(NODE_DURATION_COMPARATOR)
     }
 
     fun flatten(nodes: List<CallTreeNode>): List<CallTreeNode> {
@@ -37,7 +35,7 @@ object CallTreeNodeUtils {
     }
 
     fun flatAggregate(originalNodes: List<CallTreeNode>): List<CallTreeNode> {
-        var aggregatedNodes: MutableMap<String, AggregatedCallTreeNode> = HashMap()
+        var aggregatedNodes: MutableMap<String, AggregatedCallTreeNode> = LinkedHashMap()
         aggregatedNodes = flatAggregateInternal(originalNodes, aggregatedNodes)
         return ArrayList<CallTreeNode>(aggregatedNodes.values)
     }
