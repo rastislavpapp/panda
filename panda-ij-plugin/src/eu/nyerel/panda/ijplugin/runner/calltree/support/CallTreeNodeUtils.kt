@@ -59,21 +59,6 @@ object CallTreeNodeUtils {
         }
 
         return aggregatedNodes
-
-//        for (original in originalNodes) {
-//            var aggregated: AggregatedCallTreeNode? = aggregatedNodes[original.description]
-//            if (aggregated == null) {
-//                aggregated = AggregatedCallTreeNode(original)
-//                aggregatedNodes[aggregated.description] = aggregated
-//                aggregated.children = aggregate(original.children)
-//            } else {
-//                aggregateNodeValues(aggregated, original)
-//                val childNodes = ArrayList(original.children)
-//                childNodes.addAll(aggregated.children)
-//                aggregated.children = aggregate(childNodes)
-//            }
-//        }
-//        return ArrayList<CallTreeNode>(aggregatedNodes.values)
     }
 
     private fun aggregateNodesIntoOne(nodes: List<CallTreeNode>): AggregatedCallTreeNode {
