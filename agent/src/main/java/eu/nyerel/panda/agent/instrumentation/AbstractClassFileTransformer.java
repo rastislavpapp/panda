@@ -69,7 +69,9 @@ public abstract class AbstractClassFileTransformer implements ClassFileTransform
     }
 
     private void markAsTransformed(CtClass ctClass) throws CannotCompileException {
-        ctClass.addField(new CtField(CtClass.intType, getTransformedFlag(), ctClass));
+        CtField flag = new CtField(CtClass.intType, getTransformedFlag(), ctClass);
+        flag.setModifiers(Modifier.TRANSIENT);
+        ctClass.addField(flag);
     }
 
     private boolean alreadyTransformed(CtClass ctClass) {
