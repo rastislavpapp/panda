@@ -40,6 +40,7 @@ class PandaProgramRunner : DefaultJavaProgramRunner() {
         if (beforeExecution) {
             val vmParametersList = javaParameters.vmParametersList
             vmParametersList.add("-javaagent:$agentFilePath")
+            vmParametersList.add("-Djboss.modules.system.pkgs=eu.nyerel.panda.agent")
             val project = (runProfile as RunConfigurationBase).project
             vmParametersList.add("-Dpanda.monitored.classes=" + getMonitoredClassesString(project))
             vmParametersList.add("-Dpanda.excluded.classes=" + getExcludedClassesString(project))
